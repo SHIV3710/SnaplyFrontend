@@ -96,7 +96,7 @@ export const Account = () => {
   };
   useEffect(() => {
     dispatch(getMyPosts());
-    dispatch(loaduser());
+    // dispatch(loaduser());
     if (addmessage) {
       dispatch(addcommentclearMessages());
     }
