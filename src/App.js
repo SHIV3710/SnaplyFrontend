@@ -17,7 +17,7 @@ import { Search } from "./Pages/Search";
 
 export default function App() {
   const dispatch = useDispatch();
-  const { auth } = useSelector((state) => state.user);
+  const { auth, user } = useSelector((state) => state.user);
   useEffect(() => {
     dispatch(loaduser());
   }, [auth]);

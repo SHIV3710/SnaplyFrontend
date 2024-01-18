@@ -47,18 +47,10 @@ export const loginuser = (email, password) => async (dispatch) => {
   }
 };
 
-export const loaduser = (email, password) => async (dispatch) => {
+export const loaduser = () => async (dispatch) => {
   try {
     dispatch(LoadUserRequest());
-    const { data } = await axios.get(
-      "api/v1/profile",
-      { email, password },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const { data } = await axios.get("api/v1/profile");
     dispatch(LoadUserSuccess(data.user));
   } catch (error) {
     dispatch(LoadUserFailure(error.response.data.message));
