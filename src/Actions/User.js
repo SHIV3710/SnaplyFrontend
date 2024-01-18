@@ -54,7 +54,7 @@ export const loaduser = () => async (dispatch) => {
     const { data } = await axios.get(
       "https://snaply-backend.onrender.com/api/v1/profile"
     );
-    if (data) dispatch(LoadUserSuccess(data.user));
+    dispatch(LoadUserSuccess(data.user));
   } catch (error) {
     dispatch(LoadUserFailure(error.response.data.message));
   }
