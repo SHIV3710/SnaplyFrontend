@@ -2,9 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import {
   userreducer,
   postOffollowingReducer,
-  allUserReducer,
   allUserreducer,
-  logout,
 } from "./Reducers/user";
 import {
   Mypostreducer,

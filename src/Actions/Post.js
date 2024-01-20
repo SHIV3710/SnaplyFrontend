@@ -26,9 +26,7 @@ import {
 export const likepost = (id) => async (dispatch) => {
   try {
     dispatch(likeRequest());
-    const { data } = await axios.get(
-      `https://snaply-backend.onrender.com/api/v1/post/${id}`
-    );
+    const { data } = await axios.get(`api/v1/post/${id}`);
     dispatch(likeSuccess(data.message));
   } catch (error) {
     dispatch(likeFailure(error));
@@ -39,7 +37,7 @@ export const commentonpost = (id, comment, user) => async (dispatch) => {
   try {
     dispatch(addcommentRequest());
     const { data } = await axios.put(
-      `https://snaply-backend.onrender.com/api/v1/post/comment/${id}`,
+      `api/v1/post/comment/${id}`,
       {
         comment: comment,
         user: user,
@@ -60,7 +58,7 @@ export const deletecomment = (id, commentid) => async (dispatch) => {
   try {
     dispatch(deletecommentRequest());
     const { data } = await axios.post(
-      `https://snaply-backend.onrender.com/api/v1/post/comment/${id}`,
+      `api/v1/post/comment/${id}`,
       {
         commentid,
       },
@@ -79,9 +77,7 @@ export const deletecomment = (id, commentid) => async (dispatch) => {
 export const getMyPosts = () => async (dispatch) => {
   try {
     dispatch(MypostsRequest());
-    const { data } = await axios.get(
-      `https://snaply-backend.onrender.com/api/v1/profile/post`
-    );
+    const { data } = await axios.get(`api/v1/profile/post`);
     dispatch(MypostsSuccess(data.posts));
   } catch (error) {
     dispatch(MypostsFailure(error));
@@ -92,7 +88,7 @@ export const addPost = (image, caption) => async (dispatch) => {
   try {
     dispatch(addPostRequest());
     const { data } = await axios.post(
-      `https://snaply-backend.onrender.com/api/v1/post/upload`,
+      `api/v1/post/upload`,
       {
         caption: caption,
         image: image,
@@ -130,9 +126,7 @@ export const updatecaption = (id, caption) => async (dispatch) => {
 export const deletepost = (id) => async (dispatch) => {
   try {
     dispatch(deletePostRequest());
-    const { data } = await axios.delete(
-      `https://snaply-backend.onrender.com/api/v1/post/${id}`
-    );
+    const { data } = await axios.delete(`api/v1/post/${id}`);
     console.log(data);
     dispatch(deletePostSuccess(data.message));
   } catch (error) {
