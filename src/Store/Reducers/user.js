@@ -49,7 +49,7 @@ export const userReducer = createSlice({
     LoadUserSuccess: (state, action) => {
       state.loading = false;
       state.user = action.payload;
-      state.auth = true;
+      if (action.payload) state.auth = true;
     },
     LoadUserFailure: (state, action) => {
       state.loading = false;

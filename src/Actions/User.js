@@ -53,7 +53,7 @@ export const loaduser = () => async (dispatch) => {
     const { data } = await axios.get("api/v1/profile");
     dispatch(LoadUserSuccess(data.user));
   } catch (error) {
-    dispatch(LoadUserFailure(error.response.data.message));
+    dispatch(LoadUserFailure(error.message));
   }
 };
 
