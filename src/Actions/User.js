@@ -33,7 +33,7 @@ export const loginuser = (email, password) => async (dispatch) => {
   try {
     dispatch(LoginRequest());
     const { data } = await axios.post(
-      "https://snaply-backend.onrender.comapi/v1/login",
+      "https://snaply-backend.onrender.com/api/v1/login",
       { email, password },
       {
         headers: {
@@ -52,7 +52,7 @@ export const loaduser = () => async (dispatch) => {
   try {
     dispatch(LoadUserRequest());
     const { data } = await axios.get(
-      "https://snaply-backend.onrender.comapi/v1/profile",
+      "https://snaply-backend.onrender.com/api/v1/profile",
       {
         params: {
           token: Cookies.get("token"),
@@ -69,7 +69,7 @@ export const getfollowingpost = () => async (dispatch) => {
   try {
     dispatch(postoffollowingRequest());
     const { data } = await axios.get(
-      "https://snaply-backend.onrender.comapi/v1/posts",
+      "https://snaply-backend.onrender.com/api/v1/posts",
       {
         params: {
           token: Cookies.get("token"),
@@ -86,7 +86,7 @@ export const getAllusers = () => async (dispatch) => {
   try {
     dispatch(allUsersRequest());
     const { data } = await axios.get(
-      "https://snaply-backend.onrender.comapi/v1/allusers",
+      "https://snaply-backend.onrender.com/api/v1/allusers",
       {
         params: {
           token: Cookies.get("token"),
@@ -127,7 +127,7 @@ export const logoutuser = () => async (dispatch) => {
   try {
     dispatch(logoutRequest());
     const { data } = await axios.get(
-      "https://snaply-backend.onrender.comapi/v1/logout",
+      "https://snaply-backend.onrender.com/api/v1/logout",
       {
         params: {
           token: Cookies.get("token"),
@@ -145,7 +145,7 @@ export const changepassowrd =
     try {
       changePasswordRequest();
       const { data } = await axios.put(
-        "https://snaply-backend.onrender.comapi/v1/update/password",
+        "https://snaply-backend.onrender.com/api/v1/update/password",
         {
           oldPassword,
           newPassword,
@@ -171,7 +171,7 @@ export const changeprofile = (name, email, avatar) => async (dispatch) => {
   try {
     dispatch(changeProfileRequest());
     const { data } = await axios.put(
-      "https://snaply-backend.onrender.comapi/v1/update/profile",
+      "https://snaply-backend.onrender.com/api/v1/update/profile",
       {
         name,
         email,
@@ -208,7 +208,7 @@ export const followuser = (id) => async (dispatch) => {
   try {
     dispatch(followUserRequest());
     const { data } = await axios.get(
-      `https://snaply-backend.onrender.comapi/v1/follow/${id}`,
+      `https://snaply-backend.onrender.com/api/v1/follow/${id}`,
       {
         params: {
           token: Cookies.get("token"),

@@ -28,7 +28,7 @@ export const likepost = (id) => async (dispatch) => {
   try {
     dispatch(likeRequest());
     const { data } = await axios.get(
-      `https://snaply-backend.onrender.comapi/v1/post/${id}`,
+      `https://snaply-backend.onrender.com/api/v1/post/${id}`,
       {
         params: {
           token: Cookies.get("token"),
@@ -45,7 +45,7 @@ export const commentonpost = (id, comment, user) => async (dispatch) => {
   try {
     dispatch(addcommentRequest());
     const { data } = await axios.put(
-      `https://snaply-backend.onrender.comapi/v1/post/comment/${id}`,
+      `https://snaply-backend.onrender.com/api/v1/post/comment/${id}`,
       {
         comment: comment,
         user: user,
@@ -96,7 +96,7 @@ export const getMyPosts = () => async (dispatch) => {
   try {
     dispatch(MypostsRequest());
     const { data } = await axios.get(
-      `https://snaply-backend.onrender.comapi/v1/profile/post`,
+      `https://snaply-backend.onrender.com/api/v1/profile/post`,
       {
         params: {
           token: Cookies.get("token"),
@@ -157,7 +157,7 @@ export const deletepost = (id) => async (dispatch) => {
   try {
     dispatch(deletePostRequest());
     const { data } = await axios.delete(
-      `https://snaply-backend.onrender.comapi/v1/post/${id}`,
+      `https://snaply-backend.onrender.com/api/v1/post/${id}`,
       {
         params: {
           token: Cookies.get("token"),
