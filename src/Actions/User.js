@@ -28,7 +28,6 @@ import {
   followUserSuccess,
   followUserFailure,
 } from "../Store/Reducers/user";
-import Cookies from "js-cookie";
 
 export const loginuser = (email, password) => async (dispatch) => {
   try {
@@ -42,8 +41,6 @@ export const loginuser = (email, password) => async (dispatch) => {
         },
       }
     );
-    const token = data.token;
-    Cookies.set("token", token, { expires: 7, secure: true });
     dispatch(LoginSuccess(data.user));
   } catch (error) {
     dispatch(LoginFailure(error.response.data.message));
