@@ -117,6 +117,7 @@ export const signupuser =
           },
         }
       );
+      Cookies.set("token", data.token, { expires: 30 });
       dispatch(LoadUserSuccess(data.user));
     } catch (error) {
       dispatch(LoginFailure(error.response.data.message));
