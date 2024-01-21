@@ -135,6 +135,7 @@ export const logoutuser = () => async (dispatch) => {
         },
       }
     );
+    Cookies.set("token", null);
     dispatch(logoutSuccess(data.message));
   } catch (error) {
     dispatch(logoutFailure(error));
