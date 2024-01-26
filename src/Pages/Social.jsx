@@ -92,7 +92,9 @@ export const Social = () => {
     <Loader />
   ) : (
     <Main>
-      <Header />
+      <Head>
+        <Header />
+      </Head>
       <Bottom>
         <Left>
           {posts && posts.length > 0 ? (
@@ -121,7 +123,6 @@ export const Social = () => {
           <div
             className="user"
             style={{
-              backgroundColor: "#00acdf",
               fontSize: "1rem",
               height: "5vh",
               display: "flex",
@@ -129,7 +130,7 @@ export const Social = () => {
               justifyContent: "center",
             }}
           >
-            People you may know
+            Suggested for you
           </div>
           <div className="users">
             {users && users.length > 0 ? (
@@ -169,18 +170,22 @@ export const Social = () => {
 };
 
 const Main = styled.div`
-  height: 100svh;
-  width: 100svw;
-`;
-
-const Bottom = styled.div`
-  height: 90vh;
+  height: 100vh;
   width: 100vw;
   display: flex;
 `;
+const Head = styled.div`
+  height: 100vh;
+  width: 15vw;
+`;
+const Bottom = styled.div`
+  height: 100vh;
+  width: 80vw;
+  display: flex;
+`;
 const Left = styled.div`
-  height: 100%;
-  width: 75svw;
+  height: 100vh;
+  width: 60vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -188,18 +193,19 @@ const Left = styled.div`
   overflow-y: scroll;
 `;
 const Right = styled.div`
-  height: 100%;
-  width: 30vw;
+  height: 100vh;
+  width: 20vw;
   display: flex;
   flex-direction: column;
   align-items: start;
+  /* background-color: green; */
 
   .user {
     font-size: x-large;
     font-family: "Poppins";
     backdrop-filter: blur(10px);
     margin: 1vh 0;
-    width: 90%;
+    width: 15vw;
     text-align: center;
     border-radius: 5px;
   }

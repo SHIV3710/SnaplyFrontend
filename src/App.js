@@ -14,10 +14,11 @@ import { loaduser } from "./Actions/User";
 import { Account } from "./Pages/Account";
 import { CreatePost } from "./Pages/CreatePost";
 import { Search } from "./Pages/Search";
+import { AnyUser } from "./Pages/AnyUser";
 
 export default function App() {
   const dispatch = useDispatch();
-  const { auth } = useSelector((state) => state.user);
+  const { auth, seeuser } = useSelector((state) => state.user);
   useEffect(() => {
     dispatch(loaduser());
   }, [auth]);
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/account" element={!auth ? <Login /> : <Account />} />
         <Route path="/newpost" element={auth ? <CreatePost /> : <Login />} />
         <Route path="/search" element={auth ? <Search /> : <Login />} />
+        <Route path="/seeuser" element={auth ? <AnyUser /> : <Login />} />
       </Routes>
     </BrowserRouter>
   );

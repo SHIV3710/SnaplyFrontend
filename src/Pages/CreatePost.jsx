@@ -10,7 +10,7 @@ import { addPostclearMessages } from "../Store/Reducers/post";
 
 export const CreatePost = () => {
   const dispatch = useDispatch();
-  const [image, setimage] = useState(null);
+  const [image, setimage] = useState(undefined);
   const [caption, setcaption] = useState("");
   const { loading, message } = useSelector((state) => state.addpost);
   const handleimagechange = async (e) => {
@@ -44,7 +44,9 @@ export const CreatePost = () => {
         <Loader />
       ) : (
         <>
-          <Header />
+          <Head>
+            <Header />
+          </Head>
           <Bottom>
             <Post>
               <div>
@@ -66,7 +68,7 @@ export const CreatePost = () => {
                     style={{
                       fontWeight: "bold",
                       fontSize: "2rem",
-                      backgroundColor: "#00acdf",
+                      backgroundColor: "#000000",
                       width: "20vw",
                       display: "flex",
                       alignItems: "center",
@@ -81,7 +83,7 @@ export const CreatePost = () => {
               <div
                 className="caption"
                 style={{
-                  color: "#00acdf",
+                  color: "#000000",
                 }}
               >
                 Caption
@@ -120,9 +122,12 @@ const Main = styled.div`
   height: 100vh;
   width: 100vw;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+const Head = styled.div`
+  height: 100vh;
+  width: 20vw;
 `;
 const Bottom = styled.div`
   height: 90vh;
@@ -150,8 +155,11 @@ const Post = styled.div`
     font-weight: bold;
     gap: 1vh;
   }
-  textarea:focus {
-    outline: none;
+  textarea {
+    resize: none;
+    &:focus {
+      outline: none;
+    }
   }
 
   .button {
@@ -160,7 +168,7 @@ const Post = styled.div`
     gap: 1vw;
     font-size: 1.5rem;
     cursor: pointer;
-    color: #00acdf;
+    color: #000000;
   }
   label {
     display: flex;
@@ -176,10 +184,10 @@ const Post = styled.div`
     background: transparent;
     border: none;
     font-family: "Poppins", sans-serif;
-    color: black;
+    color: #ffffff;
     cursor: pointer;
     height: 4vh;
-    background-color: #00acdf;
+    background-color: #000000;
     border-radius: 1rem;
   }
   button:hover {

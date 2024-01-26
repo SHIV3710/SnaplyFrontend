@@ -15,6 +15,7 @@ export const userReducer = createSlice({
     loading: false,
     auth: false,
     message: "",
+    seeuser: undefined,
   },
   reducers: {
     LoginRequest: (state) => {
@@ -137,6 +138,17 @@ export const userReducer = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    anyuserRequest: (state, action) => {
+      state.loading = true;
+    },
+    anyuserSuccess: (state, action) => {
+      state.loading = false;
+      state.seeuser = action.payload;
+    },
+    anyuserFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -169,6 +181,9 @@ export const {
   followUserRequest,
   followUserFailure,
   followUserSuccess,
+  anyuserFailure,
+  anyuserRequest,
+  anyuserSuccess,
 } = userReducer.actions;
 export const userreducer = userReducer.reducer;
 
@@ -235,6 +250,7 @@ export const {
   clearErrors,
 } = allUserReducer.actions;
 export const allUserreducer = allUserReducer.reducer;
+
 export const ChangePassword = createSlice({
   name: "changepassword",
   initialState,

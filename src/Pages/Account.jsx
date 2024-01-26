@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMyPosts } from "../Actions/Post";
 import { Post } from "../Components/Post";
 import { Loader } from "../Components/Loader";
+import { RxCross2 } from "react-icons/rx";
 import {
   addPostclearErrors,
   addPostclearMessages,
@@ -29,10 +30,12 @@ import { UpdatePofile } from "../Components/UpdatePofile";
 export const Account = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [show, setshow] = useState(undefined);
   const { user, loading, message, error, auth } = useSelector(
     (state) => state.user
   );
   const { posts, loading: postloading } = useSelector((state) => state.mypost);
+  console.log(posts);
 
   const {
     loading: likeloading,
@@ -94,6 +97,9 @@ export const Account = () => {
   const handledeleteprofile = async () => {
     dispatch(deleteProfile());
   };
+  const handleimage = (post) => {
+    setshow(post);
+  };
   useEffect(() => {
     dispatch(getMyPosts());
     // dispatch(loaduser());
@@ -148,19 +154,62 @@ export const Account = () => {
     error,
     auth,
   ]);
+
   return (
     <Main>
       {postloading ? (
         <Loader />
       ) : (
         <>
-          <Header />
+          {!show ? (
+            <></>
+          ) : (
+            <div
+              style={{
+                height: "100vh",
+                width: "100vw",
+                display: "flex",
+                position: "absolute",
+                justifyContent: "center",
+                alignItems: "center",
+                backdropFilter: "blur(80px)",
+              }}
+            >
+              <RxCross2
+                onClick={() => handleimage(undefined)}
+                style={{
+                  position: "absolute",
+                  marginLeft: "90%",
+                  marginBottom: "40%",
+                  fontSize: "30px",
+                  cursor: "pointer",
+                }}
+              />
+              <Post
+                postId={show._id}
+                caption={show.caption}
+                postImage={show.image.url}
+                likes={show.likes}
+                comments={show.comments}
+                ownerImage={user.avatar.url}
+                ownerName={user.name}
+                ownerId={user._id}
+                isDelete={true}
+                isAccount={true}
+              />
+            </div>
+          )}
+          <Head>
+            <Header show={false} />
+          </Head>
           <Down>
             <Top>
               <img src={user.avatar.url} alt={user.name}></img>
               <div className="detail">
                 <p>
                   <span className="bold">{user.name}</span>
+                  <button onClick={handleprofile}>Edit Profile</button>
+                  <button onClick={handledeleteprofile}>Delete Profile</button>
                 </p>
                 <div className="count">
                   <span>
@@ -176,10 +225,6 @@ export const Account = () => {
                   </span>
                 </div>
               </div>
-              <button onClick={handlelogout}>Log Out</button>
-              <button onClick={handlechange}>Change Password</button>
-              <button onClick={handleprofile}>Update Profile</button>
-              <button onClick={handledeleteprofile}>Delete Profile</button>
             </Top>
             <Bottom>
               {showcontent == "1" ? (
@@ -219,23 +264,17 @@ export const Account = () => {
                     <UpdatePofile />
                   ) : (
                     <>
-                      <div style={{ fontWeight: "bold" }}>Posts</div>
+                      <p>Posts</p>
                       <div className="post">
                         {posts.map((post, index) => {
                           return (
-                            <Post
-                              key={index}
-                              postId={post._id}
-                              caption={post.caption}
-                              postImage={post.image.url}
-                              likes={post.likes}
-                              comments={post.comments}
-                              ownerImage={user.avatar.url}
-                              ownerName={user.name}
-                              ownerId={user._id}
-                              isDelete={true}
-                              isAccount={true}
-                            />
+                            <>
+                              <img
+                                src={post.image.url}
+                                key={index}
+                                onClick={() => handleimage(post)}
+                              />
+                            </>
                           );
                         })}
                       </div>
@@ -255,26 +294,30 @@ const Main = styled.div`
   height: 100svh;
   width: 100svw;
   display: flex;
-  flex-direction: column;
   align-items: center;
 `;
+const Head = styled.div`
+  height: 100svh;
+  width: 20svw;
+`;
 const Down = styled.div`
-  height: 90svh;
-  width: 100svw;
+  height: 100svh;
+  width: 80svw;
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
 `;
 
 const Top = styled.div`
-  height: 90svh;
-  width: 50svw;
+  height: 40svh;
+  width: 80svw;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  /* flex-direction: column; */
+  justify-content: space-evenly;
   align-items: center;
   font-family: "Poppins";
-  background-color: #00acdf;
-  clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
+  /* background-color: #00acdf; */
+  /* clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%); */
 
   > img {
     height: 10svw;
@@ -285,39 +328,39 @@ const Top = styled.div`
   }
   .detail {
     height: fit-content;
-    width: 20vw;
+    width: 50vw;
     display: flex;
     flex-direction: column;
     gap: 2vh;
     justify-content: center;
-    align-items: center;
+
+    > p {
+      display: flex;
+      width: 20vw;
+      justify-content: space-between;
+      align-items: center;
+
+      button {
+        height: 4vh;
+        border-radius: 0.2rem;
+        border: none;
+        background-color: #f6f7f9;
+        cursor: pointer;
+        &:hover {
+          background-color: #cbcdcf;
+        }
+      }
+    }
   }
   .count {
     display: flex;
-    flex-direction: column;
-    gap: 1vw;
+    width: 20vw;
+    justify-content: space-between;
+    font-size: small;
   }
   .bold {
     font-weight: bold;
     justify-self: flex-start;
-  }
-
-  button {
-    border: none;
-    height: 5vh;
-    width: 10vw;
-    width: calc(max-content);
-    border-radius: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Poppins";
-    cursor: pointer;
-    color: #00acdf;
-  }
-  button:hover {
-    background-color: #e7b65a;
-    color: white;
   }
 `;
 const Bottom = styled.div`
@@ -327,15 +370,24 @@ const Bottom = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  /* justify-content: center; */
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 2vh 0px;
   gap: 5vw;
+  cursor: pointer;
 
   .post {
     display: flex;
-    flex-direction: column;
-    flex-wrap: no-wrap;
+    width: 70vw;
+    flex-wrap: wrap;
     justify-content: center;
+    gap: 1rem;
+    img {
+      height: 40vh;
+      width: 40vh;
+      border-radius: 1rem;
+      object-fit: cover;
+    }
   }
 `;
 const ChangePassword = styled.div`

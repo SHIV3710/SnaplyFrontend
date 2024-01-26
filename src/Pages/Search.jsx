@@ -4,6 +4,7 @@ import { Header } from "../Components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllusers, loaduser } from "../Actions/User";
 import { User } from "../Components/User";
+import { useNavigate } from "react-router-dom";
 
 export const Search = () => {
   const [user, setuser] = useState([]);
@@ -13,6 +14,7 @@ export const Search = () => {
   const { user: usr } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const check = (user) => {
     let len = user.followers.length;
     for (let i = 0; i < len; i++) {
@@ -22,7 +24,8 @@ export const Search = () => {
   };
 
   const handleseeuser = (user) => {
-    setseeuser(user);
+    console.log(user);
+    navigate("/seeuser", { state: { user } });
   };
 
   const handlesearch = (value) => {
@@ -45,7 +48,7 @@ export const Search = () => {
 
   return (
     <Main>
-      <Header />
+      <Header show={true} />
       <Bottom>
         <Left>
           <p>Search any user</p>
@@ -83,7 +86,7 @@ export const Search = () => {
           </Win>
         </Left>
         <Right>
-          {seeuser ? (
+          {/* {seeuser ? (
             <div>
               <img src={seeuser.avatar.url} alt="" />
               <p>{seeuser.name}</p>
@@ -94,7 +97,7 @@ export const Search = () => {
             </div>
           ) : (
             <></>
-          )}
+          )} */}
         </Right>
       </Bottom>
     </Main>
@@ -104,6 +107,7 @@ export const Search = () => {
 const Main = styled.div`
   height: 100vh;
   width: 100vw;
+  display: flex;
 `;
 
 const Bottom = styled.div`
@@ -124,12 +128,12 @@ const Left = styled.div`
   > p {
     margin-top: 5vh;
     font-size: x-large;
-    color: #00acdf;
+    color: #000000;
   }
 
   input {
     height: 5vh;
-    border: 2px solid #00acdf;
+    border: 2px solid #000000;
     width: 25vw;
     border-radius: 0.5rem;
     text-indent: 1vw;
@@ -166,7 +170,7 @@ const Right = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 5vh;
-    border: 2px solid #00acdf;
+    border: 2px solid #000000;
     border-radius: 1rem;
     justify-content: center;
     font-family: "Poppins";

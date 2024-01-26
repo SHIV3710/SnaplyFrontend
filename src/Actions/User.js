@@ -27,13 +27,17 @@ import {
   followUserRequest,
   followUserSuccess,
   followUserFailure,
+  anyuserFailure,
+  anyuserRequest,
+  anyuserSuccess,
 } from "../Store/Reducers/user";
 import Cookies from "js-cookie";
+
 export const loginuser = (email, password) => async (dispatch) => {
   try {
     dispatch(LoginRequest());
     const { data } = await axios.post(
-      "https://snaply-backend.onrender.com/api/v1/login",
+      "http://localhost:4000/api/v1/login",
       { email, password },
       {
         headers: {
@@ -51,14 +55,11 @@ export const loginuser = (email, password) => async (dispatch) => {
 export const loaduser = () => async (dispatch) => {
   try {
     dispatch(LoadUserRequest());
-    const { data } = await axios.get(
-      "https://snaply-backend.onrender.com/api/v1/profile",
-      {
-        params: {
-          token: Cookies.get("token"),
-        },
-      }
-    );
+    const { data } = await axios.get("http://localhost:4000/api/v1/profile", {
+      params: {
+        token: Cookies.get("token"),
+      },
+    });
     dispatch(LoadUserSuccess(data.user));
   } catch (error) {
     dispatch(LoadUserFailure(error.message));
@@ -68,14 +69,11 @@ export const loaduser = () => async (dispatch) => {
 export const getfollowingpost = () => async (dispatch) => {
   try {
     dispatch(postoffollowingRequest());
-    const { data } = await axios.get(
-      "https://snaply-backend.onrender.com/api/v1/posts",
-      {
-        params: {
-          token: Cookies.get("token"),
-        },
-      }
-    );
+    const { data } = await axios.get("http://localhost:4000/api/v1/posts", {
+      params: {
+        token: Cookies.get("token"),
+      },
+    });
     dispatch(postoffollowingSuccess(data.posts));
   } catch (error) {
     dispatch(postoffollowingFailure(error.response.data.message));
@@ -85,14 +83,11 @@ export const getfollowingpost = () => async (dispatch) => {
 export const getAllusers = () => async (dispatch) => {
   try {
     dispatch(allUsersRequest());
-    const { data } = await axios.get(
-      "https://snaply-backend.onrender.com/api/v1/allusers",
-      {
-        params: {
-          token: Cookies.get("token"),
-        },
-      }
-    );
+    const { data } = await axios.get("http://localhost:4000/api/v1/allusers", {
+      params: {
+        token: Cookies.get("token"),
+      },
+    });
     dispatch(allUsersSuccess(data.Users));
   } catch (error) {
     dispatch(allUsersFailure(error));
@@ -127,14 +122,11 @@ export const signupuser =
 export const logoutuser = () => async (dispatch) => {
   try {
     dispatch(logoutRequest());
-    const { data } = await axios.get(
-      "https://snaply-backend.onrender.com/api/v1/logout",
-      {
-        params: {
-          token: Cookies.get("token"),
-        },
-      }
-    );
+    const { data } = await axios.get("http://localhost:4000/api/v1/logout", {
+      params: {
+        token: Cookies.get("token"),
+      },
+    });
     Cookies.set("token", null);
     dispatch(logoutSuccess(data.message));
   } catch (error) {
@@ -147,7 +139,7 @@ export const changepassowrd =
     try {
       changePasswordRequest();
       const { data } = await axios.put(
-        "https://snaply-backend.onrender.com/api/v1/update/password",
+        "http://localhost:4000/api/v1/update/password",
         {
           oldPassword,
           newPassword,
@@ -173,7 +165,7 @@ export const changeprofile = (name, email, avatar) => async (dispatch) => {
   try {
     dispatch(changeProfileRequest());
     const { data } = await axios.put(
-      "https://snaply-backend.onrender.com/api/v1/update/profile",
+      "http://localhost:4000/api/v1/update/profile",
       {
         name,
         email,
@@ -210,15 +202,34 @@ export const followuser = (id) => async (dispatch) => {
   try {
     dispatch(followUserRequest());
     const { data } = await axios.get(
-      `https://snaply-backend.onrender.com/api/v1/follow/${id}`,
+      `http://localhost:4000/api/v1/follow/${id}`,
       {
         params: {
           token: Cookies.get("token"),
         },
       }
     );
+    console.log(data);
     dispatch(followUserSuccess(data.message));
   } catch (error) {
     dispatch(followUserFailure(error.res.message));
+  }
+};
+
+export const anyuser = (id) => async (dispatch) => {
+  try {
+    dispatch(anyuserRequest());
+    const { data } = await axios.get(
+      `http://localhost:4000/api/v1/profile/${id}`,
+      {
+        params: {
+          token: Cookies.get("token"),
+        },
+      }
+    );
+    console.log(data);
+    dispatch(anyuserSuccess(data.user));
+  } catch (error) {
+    dispatch(anyuserFailure(error));
   }
 };

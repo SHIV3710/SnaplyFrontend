@@ -33,8 +33,7 @@ export const User = ({ Id, name, avatar, follow }) => {
 };
 
 const Main = styled.div`
-  height: 10vh;
-  width: 25vw;
+  /* height: 10vh; */
   align-self: center;
   display: flex;
   align-items: center;
@@ -59,7 +58,7 @@ const Main = styled.div`
     border-radius: 50%;
   }
   p {
-    font-size: 1rem;
+    font-size: small;
     text-decoration: none;
     color: black;
     font-family: "Poppins", sans-serif;
@@ -69,12 +68,12 @@ const Main = styled.div`
     width: 6rem;
     color: #00acdf;
     background-color: white;
-    border: 2px solid #00acdf;
+    border: none;
     border-radius: 1rem;
+    font-size: small;
     cursor: pointer;
     &:hover {
-      color: white;
-      background-color: #00acdf;
+      color: #000000;
     }
   }
 `;

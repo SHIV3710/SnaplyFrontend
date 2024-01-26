@@ -149,7 +149,6 @@ export const Post = ({
         >
           {likes.length} LIKES
         </div>
-
         {isAccount ? (
           <Caption onClick={handlechangecaption}>
             <p>Change Caption</p>
@@ -195,21 +194,20 @@ export const Post = ({
 
 const Main = styled.div`
   width: max-content;
-  height: 100vh;
+  /* height: 90vh; */
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 12px;
-  row-gap: 1vh;
+  row-gap: 0.2vh;
   font-family: "Poppins", sans-serif;
   user-select: none;
   margin: 1vh 0;
   padding: 1vh;
   position: relative;
   background-size: cover;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
-    rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  border: 1px solid gray;
   > img {
     height: 25rem;
     width: 50vw;
@@ -227,10 +225,11 @@ const PostDetail = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 97%;
-  height: 40%;
-  height: max-content;
-  gap: 1vh;
+  height: 18vh;
+  /* height: max-content; */
+  /* gap: 1vh; */
   cursor: pointer;
+  font-size: small;
 
   > a {
     display: flex;
