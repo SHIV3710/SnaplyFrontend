@@ -5,6 +5,7 @@ import {
   allUserreducer,
 } from "./Reducers/user";
 import {
+  Absolute,
   Mypostreducer,
   addcomment,
   addpost,
@@ -24,6 +25,7 @@ const store = configureStore({
     mypost: Mypostreducer,
     addpost: addpost,
     changecaption: changecaption,
+    Absolute: Absolute,
   },
 });
 

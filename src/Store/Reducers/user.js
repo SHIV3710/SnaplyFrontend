@@ -16,6 +16,7 @@ export const userReducer = createSlice({
     auth: false,
     message: "",
     seeuser: undefined,
+    path: "/",
   },
   reducers: {
     LoginRequest: (state) => {
@@ -149,6 +150,9 @@ export const userReducer = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    setpath: (state, action) => {
+      state.path = action.payload;
+    },
   },
 });
 
@@ -184,6 +188,7 @@ export const {
   anyuserFailure,
   anyuserRequest,
   anyuserSuccess,
+  setpath,
 } = userReducer.actions;
 export const userreducer = userReducer.reducer;
 

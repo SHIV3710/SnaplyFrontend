@@ -5,18 +5,37 @@ import { User } from "../Components/User";
 import { useDispatch, useSelector } from "react-redux";
 import { Post } from "../Components/Post";
 import { followuser, getAllusers, getfollowingpost } from "../Actions/User";
-import { Loader } from "../Components/Loader";
-import {
-  addcommentclearErrors,
-  addcommentclearMessages,
-  clearErrors,
-  clearMessages,
-  deletecommentclearErrors,
-  deletecommentclearMessages,
-} from "../Store/Reducers/post";
+import { CreatePost } from "./CreatePost";
+import { Search } from "./Search";
+import { AnyUser } from "./AnyUser";
+import { Account } from "./Account";
+import { ChangePassword } from "../Components/ChangePassword";
 
 export const Social = () => {
   const dispatch = useDispatch();
+  let [component, setcomponent] = useState(undefined);
+  const { path, user } = useSelector((state) => state.user);
+  useEffect(() => {
+    let url = path;
+    if (url === "/newpost") {
+      setcomponent(<CreatePost />);
+    } else if (url === "/search") {
+      setcomponent(<Search />);
+    } else if (url === "/account") {
+      setcomponent(<Account />);
+    } else if (url === "/seeuser") {
+      setcomponent(<AnyUser />);
+    } else if (url === "/changepassword") {
+      setcomponent(<ChangePassword />);
+    } else {
+      setcomponent(undefined);
+    }
+  }, [path]);
+
+  useEffect(() => {
+    dispatch(getfollowingpost());
+    dispatch(getAllusers());
+  }, [user]);
 
   const check = (user) => {
     let len = user.followers.length;
@@ -25,145 +44,77 @@ export const Social = () => {
     }
     return true;
   };
-
-  const {
-    user,
-    message: usermessage,
-    error: usererror,
-    loading: userloading,
-    auth,
-  } = useSelector((state) => state.user);
-
   let loginuserid = user._id;
 
-  const { posts, loading, error } = useSelector(
-    (state) => state.postoffollwing
-  );
+  const { posts } = useSelector((state) => state.postoffollwing);
+  const { users } = useSelector((state) => state.allUsers);
 
-  const {
-    users,
-    loading: alluserloading,
-    error: allusererror,
-    message: allusermessage,
-  } = useSelector((state) => state.allUsers);
-
-  const { error: likerror, message } = useSelector((state) => state.like);
-
-  const { message: addcommentmessage, error: addcommenterror } = useSelector(
-    (state) => state.addcomment
-  );
-
-  const { message: deletecommentmessage, error: deletecommenterror } =
-    useSelector((state) => state.deletecomment);
-
-  useEffect(() => {
-    dispatch(getAllusers());
-    dispatch(getfollowingpost());
-  }, [dispatch, auth]);
-
-  useEffect(() => {
-    if (likerror) {
-      dispatch(clearErrors());
-    }
-    if (message) {
-      dispatch(clearMessages());
-    }
-    if (addcommentmessage) {
-      dispatch(addcommentclearMessages());
-    }
-    if (addcommenterror) {
-      dispatch(addcommentclearErrors());
-    }
-    if (deletecommentmessage) {
-      dispatch(deletecommentclearMessages());
-    }
-    if (deletecommenterror) {
-      dispatch(deletecommentclearErrors());
-    }
-  }, [
-    error,
-    message,
-    addcommentmessage,
-    addcommenterror,
-    deletecommenterror,
-    deletecommentmessage,
-  ]);
-  return alluserloading ? (
-    <Loader />
-  ) : (
+  return (
     <Main>
       <Head>
         <Header />
       </Head>
       <Bottom>
-        <Left>
-          {posts && posts.length > 0 ? (
-            posts.map((post, index) => {
-              return (
-                <Post
-                  key={index}
-                  postId={post._id}
-                  caption={post.caption}
-                  postImage={post.image.url}
-                  likes={post.likes}
-                  comments={post.comments}
-                  ownerImage={post.owner.avatar.url}
-                  ownerName={post.owner.name}
-                  ownerId={post.owner._id}
-                  isDelete={false}
-                  isAccount={false}
-                />
-              );
-            })
-          ) : (
-            <></>
-          )}
-        </Left>
-        <Right>
-          <div
-            className="user"
-            style={{
-              fontSize: "1rem",
-              height: "5vh",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            Suggested for you
-          </div>
-          <div className="users">
-            {users && users.length > 0 ? (
-              <>
-                {users.map((user, index) => {
-                  if (user._id !== loginuserid && check(user)) {
-                    return (
-                      <User
-                        Id={user._id}
-                        name={user.name}
-                        key={index}
-                        avatar={user.avatar.url}
-                        follow={false}
-                      />
-                    );
-                  } else if (!check(user)) {
-                    return (
-                      <User
-                        Id={user._id}
-                        name={user.name}
-                        key={index}
-                        avatar={user.avatar.url}
-                        follow={true}
-                      />
-                    );
-                  }
-                })}
-              </>
-            ) : (
-              <></>
-            )}
-          </div>
-        </Right>
+        {component ? (
+          <>{component}</>
+        ) : (
+          <>
+            <Left>
+              {posts && posts.length > 0 ? (
+                posts.map((post, index) => {
+                  return <Post key={index} postId={post._id} />;
+                })
+              ) : (
+                <></>
+              )}
+            </Left>
+            <Right>
+              <div
+                className="user"
+                style={{
+                  fontSize: "1rem",
+                  height: "5vh",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                Suggested for you
+              </div>
+              <div className="users">
+                {users && users.length > 0 ? (
+                  <>
+                    {users.map((user, index) => {
+                      if (user._id !== loginuserid && check(user)) {
+                        return (
+                          <User
+                            Id={user._id}
+                            name={user.name}
+                            key={index}
+                            avatar={user.avatar.url}
+                            follow={false}
+                          />
+                        );
+                      } else if (!check(user)) {
+                        return (
+                          <User
+                            Id={user._id}
+                            name={user.name}
+                            key={index}
+                            avatar={user.avatar.url}
+                            follow={true}
+                          />
+                        );
+                      }
+                    })}
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
+            </Right>
+          </>
+        )}
       </Bottom>
     </Main>
   );
@@ -173,19 +124,19 @@ const Main = styled.div`
   height: 100vh;
   width: 100vw;
   display: flex;
+  gap: 1vw;
+  user-select: none;
 `;
 const Head = styled.div`
   height: 100vh;
-  width: 15vw;
 `;
 const Bottom = styled.div`
   height: 100vh;
-  width: 80vw;
   display: flex;
 `;
 const Left = styled.div`
   height: 100vh;
-  width: 60vw;
+  width: 65vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -193,12 +144,10 @@ const Left = styled.div`
   overflow-y: scroll;
 `;
 const Right = styled.div`
-  height: 100vh;
-  width: 20vw;
   display: flex;
+  /* width: 20vw; */
   flex-direction: column;
   align-items: start;
-  /* background-color: green; */
 
   .user {
     font-size: x-large;
@@ -210,8 +159,7 @@ const Right = styled.div`
     border-radius: 5px;
   }
   .users {
-    height: 90%;
-    width: 90%;
+    /* width: 90%; */
     border-radius: 0.5rem;
     display: flex;
     flex-direction: column;

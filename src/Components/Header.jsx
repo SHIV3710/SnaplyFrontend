@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import { IoHome } from "react-icons/io5";
@@ -9,83 +9,56 @@ import { IoSearchOutline } from "react-icons/io5";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { FaCircleUser } from "react-icons/fa6";
 import { IoReorderThree } from "react-icons/io5";
-import { TiSocialLastFm } from "react-icons/ti";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Logo from "../Resources/logo.png";
 import { logoutuser } from "../Actions/User";
 import { AiOutlineLogout } from "react-icons/ai";
+import { setpath } from "../Store/Reducers/user";
+import { CgArrowsExchange } from "react-icons/cg";
 
 export const Header = ({ show }) => {
   const dispatch = useDispatch();
   const [tab, setTab] = useState(window.location.pathname);
   const [account, setaccount] = useState(undefined);
+
+  useEffect(() => {
+    dispatch(setpath(tab));
+  }, [tab]);
   const handlelogout = () => {
     dispatch(logoutuser());
   };
   return (
     <Main>
-      {show ? (
-        <TiSocialLastFm />
-      ) : (
-        <>
-          <img src={Logo} alt="" />
-        </>
-      )}
+      <img src={Logo} alt="" />
       <div>
-        <Link to="/" onClick={() => setTab("/")}>
+        <Link onClick={() => setTab("/")}>
           {tab === "/" ? (
-            <IoHome
-              style={{ color: "black", padding: show ? "0px 10px" : "0px" }}
-            />
+            <IoHome style={{ color: "black" }} />
           ) : (
-            <IoHomeOutline style={{ padding: show ? "0px 10px" : "0px" }} />
+            <IoHomeOutline />
           )}
-          {show ? (
-            <></>
-          ) : (
-            <>
-              <span>Home</span>
-            </>
-          )}
+          <span>Home</span>
         </Link>
 
-        <Link to="/newpost" onClick={() => setTab("/newpost")}>
+        <Link onClick={() => setTab("/newpost")}>
           {tab === "/newpost" ? (
-            <IoIosAddCircle
-              style={{ color: "black", padding: show ? "0px 10px" : "0px" }}
-            />
+            <IoIosAddCircle style={{ color: "black" }} />
           ) : (
-            <IoIosAddCircleOutline
-              style={{ padding: show ? "0px 10px" : "0px" }}
-            />
+            <IoIosAddCircleOutline />
           )}
-          {show ? (
-            <></>
-          ) : (
-            <>
-              <span>Post</span>
-            </>
-          )}
+          <span>Post</span>
         </Link>
 
-        <Link to="/search" onClick={() => setTab("/search")}>
+        <Link onClick={() => setTab("/search")}>
           {tab === "/search" ? (
-            <IoSearchOutline
-              style={{ color: "black", padding: show ? "0px 10px" : "0px" }}
-            />
+            <IoSearchOutline style={{ color: "black" }} />
           ) : (
-            <IoSearchOutline style={{ padding: show ? "0px 10px" : "0px" }} />
+            <IoSearchOutline />
           )}
-          {show ? (
-            <></>
-          ) : (
-            <>
-              <span>Search</span>
-            </>
-          )}
+          <span>Search</span>
         </Link>
 
-        <Link to="/account" onClick={() => setTab("/account")}>
+        <Link onClick={() => setTab("/account")}>
           {tab === "/account" ? (
             <FaCircleUser
               style={{ color: "black", padding: show ? "0px 10px" : "0px" }}
@@ -109,11 +82,13 @@ export const Header = ({ show }) => {
       {account ? (
         <div
           style={{
-            height: "10vh",
+            height: "fit-content",
             display: "flex",
-            gap: "1vh",
+            gap: "2vh",
             fontSize: "small",
-            // alignItems: "center",
+            cursor: "pointer",
+            position: "absolute",
+            top: "80%",
             cursor: "pointer",
           }}
         >
@@ -122,8 +97,10 @@ export const Header = ({ show }) => {
             <span onClick={handlelogout}>Logout</span>
           </a>
           <a>
-            <IoReorderThree />
-            <span>Change Password</span>
+            <CgArrowsExchange />
+            <span onClick={() => setTab("/changepassword")}>
+              Change Password
+            </span>
           </a>
         </div>
       ) : (
@@ -134,32 +111,26 @@ export const Header = ({ show }) => {
           setaccount(!account);
         }}
       >
-        {show ? (
-          <>
-            <IoReorderThree />
-          </>
-        ) : (
-          <>
-            <IoReorderThree />
-            <span>More</span>
-          </>
-        )}
+        <IoReorderThree />
+        <span>More</span>
       </a>
     </Main>
   );
 };
 
 const Main = styled.div`
-  display: flex;
   height: 100vh;
+  width: 14vw;
+  display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  align-items: center;
-  border-right: 1px solid rgb(197, 195, 195);
+  align-items: self-start;
+  border-right: 1px solid rgb(186, 183, 183);
   transition: 1s ease;
+  padding-left: 2vw;
 
   > img {
-    height: 20vh;
+    height: 16vh;
   }
   > svg {
     font-size: xxx-large;
@@ -177,38 +148,22 @@ const Main = styled.div`
     align-items: flex-start;
     justify-content: start;
     text-decoration: none;
+    cursor: pointer;
     color: black;
     font-family: "Poppins";
     &:hover {
       svg {
-        font-size: 22px;
+        font-size: 25px;
       }
     }
 
     svg {
-      font-size: 20px;
+      font-size: 24px;
       transition: 0.2s;
-      color: gray;
+      color: #000000;
     }
-    > span {
-      padding-left: 2vw;
+    span {
+      padding-left: 1.5vw;
     }
-  }
-  button {
-    width: 90%;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1vw;
-    font-size: large;
-    svg {
-      font-size: xx-large;
-      &:focus {
-        color: black;
-      }
-    }
-    cursor: pointer;
-    color: gray;
   }
 `;

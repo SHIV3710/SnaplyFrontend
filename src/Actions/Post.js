@@ -35,7 +35,7 @@ export const likepost = (id) => async (dispatch) => {
         },
       }
     );
-    dispatch(likeSuccess(data.message));
+    dispatch(likeSuccess({ id: id, message: data.message }));
   } catch (error) {
     dispatch(likeFailure(error));
   }
@@ -71,7 +71,7 @@ export const deletecomment = (id, commentid) => async (dispatch) => {
   try {
     dispatch(deletecommentRequest());
     const { data } = await axios.post(
-      `api/v1/post/comment/${id}`,
+      `https://snaply-backend.onrender.com/api/v1/post/comment/${id}`,
       {
         commentid,
       },
@@ -168,5 +168,17 @@ export const deletepost = (id) => async (dispatch) => {
     dispatch(deletePostSuccess(data.message));
   } catch (error) {
     dispatch(deletePostFailure(error));
+  }
+};
+
+export const getapost = async (id) => {
+  try {
+    const { data } = await axios.get(
+      `https://snaply-backend.onrender.com/api/v1/getpost/${id}`
+    );
+    // console. log(data);
+    return data.post;
+  } catch (error) {
+    return error;
   }
 };

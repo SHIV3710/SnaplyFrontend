@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { User } from "./User";
 
 export const AllLike = (users) => {
   return (
@@ -9,7 +8,7 @@ export const AllLike = (users) => {
       <div className="likes">
         {users.users.map((user, index) => {
           return (
-            <div className="usr">
+            <div className="usr" key={index}>
               <img src={user.avatar.url} />
               <p>{user.name}</p>
             </div>

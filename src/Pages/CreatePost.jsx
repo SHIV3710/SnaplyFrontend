@@ -5,7 +5,6 @@ import { FaRegImage } from "react-icons/fa6";
 import { BiPaperclip } from "react-icons/bi";
 import { addPost } from "../Actions/Post";
 import { useDispatch, useSelector } from "react-redux";
-import { Loader } from "../Components/Loader";
 import { addPostclearMessages } from "../Store/Reducers/post";
 
 export const CreatePost = () => {
@@ -40,87 +39,80 @@ export const CreatePost = () => {
 
   return (
     <Main>
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <Head>
-            <Header />
-          </Head>
-          <Bottom>
-            <Post>
-              <div>
-                {image != null ? (
-                  <>
-                    <img
-                      style={{
-                        height: "30vh",
-                        width: "30vh",
-                        borderRadius: "0.5rem",
-                        objectFit: "contain",
-                      }}
-                      src={image}
-                      alt="Your New Post"
-                    />
-                  </>
-                ) : (
-                  <p
+      <>
+        <Bottom>
+          <Post>
+            <div>
+              {image != null ? (
+                <>
+                  <img
                     style={{
-                      fontWeight: "bold",
-                      fontSize: "2rem",
-                      backgroundColor: "#000000",
-                      width: "20vw",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      borderRadius: "1rem",
+                      height: "30vh",
+                      width: "30vh",
+                      borderRadius: "0.5rem",
+                      objectFit: "contain",
                     }}
-                  >
-                    Create Post
-                  </p>
-                )}
-              </div>
-              <div
-                className="caption"
-                style={{
-                  color: "#000000",
-                }}
-              >
-                Caption
-                <textarea
-                  placeholder="Add a caption to your post"
+                    src={image}
+                    alt="Your New Post"
+                  />
+                </>
+              ) : (
+                <p
                   style={{
-                    height: "25vh",
-                    width: "30vw",
-                    fontFamily: "Poppins",
-                    borderRadius: "0.3rem",
-                    textIndent: "10px",
-                    background: "transparent",
+                    fontWeight: "bold",
+                    fontSize: "2rem",
+                    backgroundColor: "#000000",
+                    width: "20vw",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: "1rem",
                   }}
-                  onChange={(e) => setcaption(e.target.value)}
-                ></textarea>
-              </div>
-              <div className="button">
-                <FaRegImage />
-                <label>
-                  <input type="file" value="" onChange={handleimagechange} />
-                  <BiPaperclip />
-                </label>
-              </div>
-              <button disabled={loading} onClick={handlecreatepost}>
-                Post
-              </button>
-            </Post>
-          </Bottom>
-        </>
-      )}
+                >
+                  Create Post
+                </p>
+              )}
+            </div>
+            <div
+              className="caption"
+              style={{
+                color: "#000000",
+              }}
+            >
+              Caption
+              <textarea
+                placeholder="Add a caption to your post"
+                style={{
+                  height: "25vh",
+                  width: "30vw",
+                  fontFamily: "Poppins",
+                  borderRadius: "0.3rem",
+                  textIndent: "10px",
+                  background: "transparent",
+                }}
+                onChange={(e) => setcaption(e.target.value)}
+              ></textarea>
+            </div>
+            <div className="button">
+              <FaRegImage />
+              <label>
+                <input type="file" value="" onChange={handleimagechange} />
+                <BiPaperclip />
+              </label>
+            </div>
+            <button disabled={loading} onClick={handlecreatepost}>
+              Post
+            </button>
+          </Post>
+        </Bottom>
+      </>
     </Main>
   );
 };
 
 const Main = styled.div`
   height: 100vh;
-  width: 100vw;
+  width: 79vw;
   display: flex;
   align-items: center;
   justify-content: center;

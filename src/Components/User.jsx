@@ -11,8 +11,6 @@ import {
 
 export const User = ({ Id, name, avatar, follow }) => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
-  const { posts } = useSelector((state) => state.postoffollwing);
 
   const handlefollow = async () => {
     await dispatch(followuser(Id));
@@ -33,7 +31,6 @@ export const User = ({ Id, name, avatar, follow }) => {
 };
 
 const Main = styled.div`
-  /* height: 10vh; */
   align-self: center;
   display: flex;
   align-items: center;

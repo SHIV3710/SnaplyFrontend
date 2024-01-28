@@ -4,37 +4,24 @@ import styled from "styled-components";
 import { GoHeart } from "react-icons/go";
 import { BiComment } from "react-icons/bi";
 import { TbHttpDelete } from "react-icons/tb";
-import { FaRegComment } from "react-icons/fa";
 import { FcLike } from "react-icons/fc";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import {
   commentonpost,
   deletepost,
   getMyPosts,
+  getapost,
   likepost,
   updatecaption,
 } from "../Actions/Post";
-
-import {
-  clearErrors,
-  clearMessages,
-  likeSuccesslikes,
-} from "../Store/Reducers/post";
-import { getfollowingpost } from "../Actions/User";
-import { Dialog } from "@mui/material";
+import { anyuser, getfollowingpost } from "../Actions/User";
 import { AllLike } from "./AllLike";
 import { AllComments } from "./AllComments";
 
 export const Post = ({
   postId,
-  caption,
-  postImage,
   likes = [],
   comments = [],
-  ownerImage,
-  ownerName,
-  ownerId,
   isDelete = false,
   isAccount = false,
 }) => {
@@ -44,27 +31,41 @@ export const Post = ({
   const [comment, setcomment] = useState("Add a new comment");
   const [changecaption, setchangecaption] = useState(false);
   const [newcaption, setcaption] = useState();
+  const [post, setpost] = useState(undefined);
+
+  const { id, message } = useSelector((state) => state.like);
+  const { message: ac } = useSelector((state) => state.addcomment);
+  const { message: dc } = useSelector((state) => state.deletecomment);
 
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state) => state.user);
+  const getpost = async () => {
+    await getapost(postId).then((res) => setpost(res));
+  };
 
-  const {
-    loading: captionloading,
-    message: captionmessage,
-    error: captionerror,
-  } = useSelector((state) => state.changecaption);
+  useEffect(() => {
+    getpost();
+  }, [message, ac, dc]);
+
+  useEffect(() => {
+    if (post) {
+      post.likes.forEach((item) => {
+        if (item._id === user._id) {
+          setliked(true);
+        }
+      });
+    }
+  }, [post]);
+
+  const { user, seeuser } = useSelector((state) => state.user);
 
   const handlelike = async () => {
     setliked(!liked);
     await dispatch(likepost(postId));
-    if (isAccount) {
-      await dispatch(getMyPosts());
-    }
-    await dispatch(getfollowingpost());
+    await getpost();
   };
 
-  const handlechangecaption = () => {
+  const handlechangecaption = async () => {
     setchangecaption(!changecaption);
   };
 
@@ -79,122 +80,123 @@ export const Post = ({
   const handlecomment = async () => {
     if (comment) {
       await dispatch(commentonpost(postId, comment, user));
-      await dispatch(getfollowingpost());
+      await getpost();
     }
   };
 
-  const handlepostdelete = () => {
-    dispatch(deletepost(postId));
+  const handlepostdelete = async () => {
+    await dispatch(deletepost(postId));
   };
 
   const handlecaption = async () => {
     if (newcaption) {
-      dispatch(updatecaption(postId, newcaption));
+      await dispatch(updatecaption(postId, newcaption));
+      await getpost();
     }
   };
 
-  useEffect(() => {
-    likes.forEach((item) => {
-      if (item._id === user._id) {
-        setliked(true);
-      }
-    });
-  }, [likes, user._id, comments]);
-
   return (
-    <Main>
-      <img src={`${postImage}`} alt="Post" />
-      <PostDetail>
-        <div className="icon">
-          {liked ? (
-            <FcLike onClick={handlelike} />
-          ) : (
-            <GoHeart onClick={handlelike} />
-          )}
-          <BiComment
-            style={{ fontSize: "smaller" }}
-            onClick={handleallcomment}
-          />
-          {isDelete ? <TbHttpDelete onClick={handlepostdelete} /> : null}
-          {alllikes ? <AllLike users={likes} /> : <></>}
-          {allcomment ? (
-            <AllComments
-              isAccount={isAccount}
-              comments={comments}
-              postId={postId}
-            />
-          ) : (
-            <></>
-          )}
-        </div>
-        <Link to={`/user/${ownerId}`}>
-          <p
-            style={{
-              minWidth: "fit-content",
-              fontWeight: "bold",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {ownerName}
-          </p>
-        </Link>
-        <div style={{ fontStyle: "italic" }} className="caption">
-          {caption}
-        </div>
-        <div
-          className="likes"
-          style={{ fontFamily: "Poppins" }}
-          onClick={handletotallike}
-        >
-          {likes.length} LIKES
-        </div>
-        {isAccount ? (
-          <Caption onClick={handlechangecaption}>
-            <p>Change Caption</p>
-          </Caption>
-        ) : (
-          <></>
-        )}
-      </PostDetail>
-      {changecaption ? (
+    <>
+      {post ? (
         <>
-          <Comment>
-            <div>
-              <input
-                type="text"
-                placeholder="Add a new Caption"
-                onChange={(e) => setcaption(e.target.value)}
-              />
-            </div>
-            <button onClick={handlecaption}>Change</button>
-          </Comment>
+          {" "}
+          <Main>
+            <img src={post.image.url} alt="Post" />
+            <PostDetail>
+              <div className="icon">
+                {liked ? (
+                  <FcLike onClick={handlelike} />
+                ) : (
+                  <GoHeart onClick={handlelike} />
+                )}
+                <BiComment
+                  style={{ fontSize: "smaller" }}
+                  onClick={handleallcomment}
+                />
+                {isDelete ? <TbHttpDelete onClick={handlepostdelete} /> : null}
+                {alllikes ? <AllLike users={post.likes} /> : <></>}
+                {allcomment ? (
+                  <AllComments
+                    isAccount={isAccount}
+                    comments={post.comments}
+                    postId={postId}
+                  />
+                ) : (
+                  <></>
+                )}
+              </div>
+              <Link>
+                <p
+                  style={{
+                    minWidth: "fit-content",
+                    fontWeight: "bold",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {post.owner.name}
+                </p>
+              </Link>
+              <div style={{ fontStyle: "italic" }} className="caption">
+                {post.caption}
+              </div>
+              <div
+                className="likes"
+                style={{ fontFamily: "Poppins" }}
+                onClick={handletotallike}
+              >
+                {post.likes.length} LIKES
+              </div>
+              {isAccount ? (
+                <Caption onClick={handlechangecaption}>
+                  {!changecaption ? <p>Change Caption</p> : <p>Add Comment</p>}
+                </Caption>
+              ) : (
+                <></>
+              )}
+            </PostDetail>
+            {changecaption ? (
+              <>
+                <Comment>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Add a new Caption"
+                      onChange={(e) => setcaption(e.target.value)}
+                    />
+                  </div>
+                  <button onClick={handlecaption}>Change</button>
+                </Comment>
+              </>
+            ) : (
+              <>
+                <Comment>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder={comment}
+                      onChange={(e) =>
+                        e.target.value
+                          ? setcomment(e.target.value)
+                          : setcomment("Add a new Comment")
+                      }
+                    />
+                  </div>
+                  <button onClick={handlecomment}>Post</button>
+                </Comment>
+              </>
+            )}
+          </Main>
         </>
       ) : (
-        <>
-          <Comment>
-            <div>
-              <input
-                type="text"
-                placeholder={comment}
-                onChange={(e) =>
-                  e.target.value
-                    ? setcomment(e.target.value)
-                    : setcomment("Add a new Comment")
-                }
-              />
-            </div>
-            <button onClick={handlecomment}>Post</button>
-          </Comment>
-        </>
+        <></>
       )}
-    </Main>
+    </>
   );
 };
 
 const Main = styled.div`
   width: max-content;
-  /* height: 90vh; */
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -226,8 +228,6 @@ const PostDetail = styled.div`
   justify-content: space-between;
   width: 97%;
   height: 18vh;
-  /* height: max-content; */
-  /* gap: 1vh; */
   cursor: pointer;
   font-size: small;
 
@@ -269,7 +269,7 @@ const Comment = styled.div`
 
   input {
     height: 20px;
-    width: 40vw;
+    width: 45vw;
     background: transparent;
     border: none;
     border-bottom: 1px solid #000000;
@@ -282,32 +282,29 @@ const Comment = styled.div`
   button {
     display: flex;
     align-items: center;
-    width: 8vw;
+    width: fit-content;
     border-radius: 1rem;
     justify-content: center;
     background: #ffffff;
     font-family: "Poppins", sans-serif;
     font-size: 15px;
     cursor: pointer;
-    border: 2px solid #00acdf;
+    border: none;
     color: #00acdf;
   }
   button:hover {
-    color: #ffffff;
-    background: #00acdf;
+    color: #000000;
   }
 `;
 
 const Caption = styled.div`
-  align-self: flex-start;
   display: flex;
+  align-self: flex-start;
   align-items: center;
   justify-content: center;
   border-radius: 1rem;
   height: 5vh;
-  width: 12vw;
-  background-color: #00acdf;
-  color: white;
+  color: #00a2ff;
   &:hover {
     color: #000000;
   }

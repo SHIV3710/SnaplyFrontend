@@ -1,17 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { User } from "./User";
 
 import { useDispatch, useSelector } from "react-redux";
-import { deletecomment } from "../Actions/Post";
-import { getfollowingpost } from "../Actions/User";
 import { CommentCard } from "./CommentCard";
 
 export const AllComments = ({ comments, isAccount, postId }) => {
   let comment = comments;
-  console.log(comment);
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
   return (
     <Main>
       <div className="content">Comments</div>

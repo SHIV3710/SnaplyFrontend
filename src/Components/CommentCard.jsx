@@ -1,19 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import { User } from "./User";
 import { useDispatch, useSelector } from "react-redux";
-import { deletecomment, getMyPosts } from "../Actions/Post";
+import { deletecomment, getMyPosts, getapost } from "../Actions/Post";
 import { getfollowingpost } from "../Actions/User";
 import { MdDelete } from "react-icons/md";
-import { deletecommentclearErrors } from "../Store/Reducers/post";
 
 export const CommentCard = ({ comm, isAccount, postId }) => {
-  console.log(comm._id);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const handledelete = async () => {
     await dispatch(deletecomment(postId, comm._id));
-    await dispatch(getfollowingpost());
   };
   return (
     <Main>

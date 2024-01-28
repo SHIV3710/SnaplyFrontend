@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import Image from "../Pictures/login-back2.jpg";
 import { LuLogIn } from "react-icons/lu";
-import { Navbar } from "../Components/Navbar";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa6";
 import { Signup } from "./Signup";

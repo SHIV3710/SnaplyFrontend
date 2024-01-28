@@ -2,32 +2,32 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Header } from "../Components/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { getMyPosts } from "../Actions/Post";
+import { getMyPosts, getapost } from "../Actions/Post";
 import { Post } from "../Components/Post";
-import { Loader } from "../Components/Loader";
 import { RxCross2 } from "react-icons/rx";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UpdatePofile } from "../Components/UpdatePofile";
 import { anyuser, followuser } from "../Actions/User";
+import { changepost } from "../Store/Reducers/post";
 export const AnyUser = () => {
   const dispatch = useDispatch();
-  const { state } = useLocation();
   const [show, setshow] = useState(undefined);
-  const { seeuser, user } = useSelector((state) => state.user);
+  const { seeuser } = useSelector((state) => state.user);
+  const { post } = useSelector((state) => state.Absolute);
+  const { loading } = useSelector((state) => state.like);
+  const { message: ac } = useSelector((state) => state.addcomment);
+  const { message: dc } = useSelector((state) => state.deletecomment);
   const [follow, setfollow] = useState(false);
-  console.log(state.user);
-
-  useEffect(() => {
-    dispatch(anyuser(state.user._id));
-  }, [dispatch]);
-
-  const handleimage = (value) => {
-    setshow(value);
+  const handleimage = async (value) => {
+    dispatch(changepost(value));
   };
 
-  const handlefollow = () => {
-    dispatch(followuser(seeuser._id));
-    dispatch(anyuser(state.user._id));
+  useEffect(() => {
+    setshow(post);
+  }, [post, loading]);
+
+  const handlefollow = async () => {
+    await dispatch(followuser(seeuser._id));
     setfollow(!follow);
   };
 
@@ -44,7 +44,7 @@ export const AnyUser = () => {
               <div
                 style={{
                   height: "100vh",
-                  width: "100vw",
+                  width: "80vw",
                   display: "flex",
                   position: "absolute",
                   justifyContent: "center",
@@ -57,34 +57,25 @@ export const AnyUser = () => {
                   style={{
                     position: "absolute",
                     marginLeft: "90%",
-                    marginBottom: "40%",
+                    marginBottom: "50%",
                     fontSize: "30px",
                     cursor: "pointer",
                   }}
                 />
                 <Post
                   postId={show._id}
-                  caption={show.caption}
-                  postImage={show.image.url}
-                  likes={show.likes}
-                  comments={show.comments}
-                  ownerImage={seeuser.avatar.url}
-                  ownerName={seeuser.name}
-                  ownerId={seeuser._id}
                   isDelete={false}
                   isAccount={false}
+                  key={show._id}
                 />
               </div>
             )}
-            <Head>
-              <Header show={false} />
-            </Head>
             <Down>
               <Top>
                 <img src={seeuser.avatar.url} alt={seeuser.name} />
                 <div className="detail">
                   <p>
-                    <span className="bold">{state.user.name}</span>
+                    <span className="bold">{seeuser.name}</span>
                     <button
                       onClick={() => {
                         handlefollow();
@@ -95,9 +86,7 @@ export const AnyUser = () => {
                   </p>
                   <div className="count">
                     <span>
-                      <span className="bold">
-                        {state.user.followers.length}
-                      </span>{" "}
+                      <span className="bold">{seeuser.followers.length}</span>{" "}
                       Followers
                     </span>
                     <span>
@@ -115,13 +104,13 @@ export const AnyUser = () => {
                 <div className="post">
                   {seeuser.posts.map((post, index) => {
                     return (
-                      <>
+                      <div key={index}>
                         <img
                           src={post.image.url}
                           key={index}
-                          onClick={() => handleimage(post)}
+                          onClick={() => handleimage(post, index)}
                         />
-                      </>
+                      </div>
                     );
                   })}
                 </div>
@@ -135,28 +124,24 @@ export const AnyUser = () => {
 };
 
 const Main = styled.div`
-  height: 100svh;
-  width: 100svw;
+  height: 100vh;
   display: flex;
   align-items: center;
-`;
-const Head = styled.div`
-  height: 100svh;
-  width: 20svw;
+  overflow: hidden;
 `;
 const Down = styled.div`
-  height: 100svh;
-  width: 80svw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  overflow-y: scroll;
 `;
 
 const Top = styled.div`
-  height: 40svh;
-  width: 80svw;
+  height: 30vh;
+  width: 79vw;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
+  gap: 5vw;
   align-items: center;
   font-family: "Poppins";
 
@@ -169,7 +154,7 @@ const Top = styled.div`
   }
   .detail {
     height: fit-content;
-    width: 50vw;
+    width: 30vw;
     display: flex;
     flex-direction: column;
     gap: 2vh;
@@ -178,7 +163,7 @@ const Top = styled.div`
     > p {
       display: flex;
       width: 20vw;
-      gap: 3vw;
+      gap: 2vw;
       align-items: center;
 
       button {
@@ -205,16 +190,14 @@ const Top = styled.div`
   }
 `;
 const Bottom = styled.div`
-  height: 90svh;
-  width: 70svw;
+  height: 60vh;
+  width: 81.5vw;
   font-family: "Poppins";
   display: flex;
   align-items: center;
   flex-direction: column;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  padding: 2vh 0px;
-  gap: 5vw;
+
+  gap: 1vw;
   cursor: pointer;
 
   .post {
@@ -222,51 +205,13 @@ const Bottom = styled.div`
     width: 70vw;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1rem;
+    gap: 1vw;
+    padding: 1vh 0px;
     img {
       height: 40vh;
       width: 40vh;
       border-radius: 1rem;
       object-fit: cover;
     }
-  }
-`;
-const ChangePassword = styled.div`
-  position: absolute;
-  height: 60vh;
-  width: 30vw;
-  top: 25%;
-  background-color: white;
-  border-radius: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  border: 1px solid #00acdf;
-
-  input {
-    height: 5vh;
-    width: 25vw;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid #000000;
-    font-family: "Poppins", sans-serif;
-  }
-  input:focus {
-    outline: none;
-  }
-
-  button {
-    background: transparent;
-    border: none;
-    font-family: "Poppins", sans-serif;
-    color: black;
-    cursor: pointer;
-    height: 4vh;
-    background-color: #00acdf;
-    border-radius: 1rem;
-  }
-  button:hover {
-    font-weight: bold;
   }
 `;

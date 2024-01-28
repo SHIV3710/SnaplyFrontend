@@ -27,9 +27,9 @@ export default function App() {
       <Routes>
         <Route path="/" element={!auth ? <Login /> : <Social />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/account" element={!auth ? <Login /> : <Account />} />
-        <Route path="/newpost" element={auth ? <CreatePost /> : <Login />} />
-        <Route path="/search" element={auth ? <Search /> : <Login />} />
+        {/* <Route path="/account" element={!auth ? <Login /> : <Account />} /> */}
+        {/* <Route path="/newpost" element={auth ? <CreatePost /> : <Login />} /> */}
+        {/* <Route path="/search" element={auth ? <Search /> : <Login />} /> */}
         <Route path="/seeuser" element={auth ? <AnyUser /> : <Login />} />
       </Routes>
     </BrowserRouter>

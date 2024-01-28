@@ -6,6 +6,7 @@ export const likeReducer = createSlice({
     loading: false,
     message: "",
     error: "",
+    id: undefined,
   },
   reducers: {
     likeRequest: (state, action) => {
@@ -13,11 +14,13 @@ export const likeReducer = createSlice({
     },
     likeSuccess: (state, action) => {
       state.loading = false;
-      state.message = action.payload;
+      state.message = action.payload.message;
+      state.id = action.payload.id;
     },
     likeFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+      state.id = undefined;
     },
     clearErrors: (state, action) => {
       state.error = null;
@@ -44,6 +47,7 @@ export const addComment = createSlice({
     loading: false,
     message: null,
     error: null,
+    id: undefined,
   },
   reducers: {
     addcommentRequest: (state, action) => {
@@ -82,6 +86,7 @@ export const deleteComment = createSlice({
     loading: false,
     message: "",
     error: null,
+    id: undefined,
   },
   reducers: {
     deletecommentRequest: (state, action) => {
@@ -206,6 +211,7 @@ export const changeCaption = createSlice({
     loading: false,
     message: "",
     error: null,
+    id: undefined,
   },
   reducers: {
     changeCaptionRequest: (state, action) => {
@@ -237,3 +243,23 @@ export const {
 } = changeCaption.actions;
 
 export const changecaption = changeCaption.reducer;
+
+export const absolute = createSlice({
+  name: "absolute",
+  initialState: {
+    component: undefined,
+    post: undefined,
+  },
+  reducers: {
+    changeabsolute: (state, action) => {
+      state.component = action.payload;
+    },
+    changepost: (state, action) => {
+      state.post = action.payload;
+    },
+  },
+});
+
+export const { changeabsolute, changepost } = absolute.actions;
+
+export const Absolute = absolute.reducer;

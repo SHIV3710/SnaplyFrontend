@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { Header } from "../Components/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllusers, loaduser } from "../Actions/User";
+import { anyuser, getAllusers, loaduser } from "../Actions/User";
 import { User } from "../Components/User";
 import { useNavigate } from "react-router-dom";
+import { setpath } from "../Store/Reducers/user";
 
 export const Search = () => {
   const [user, setuser] = useState([]);
@@ -14,7 +15,6 @@ export const Search = () => {
   const { user: usr } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const check = (user) => {
     let len = user.followers.length;
     for (let i = 0; i < len; i++) {
@@ -23,9 +23,9 @@ export const Search = () => {
     return true;
   };
 
-  const handleseeuser = (user) => {
-    console.log(user);
-    navigate("/seeuser", { state: { user } });
+  const handleseeuser = async (user) => {
+    await dispatch(anyuser(user._id));
+    await dispatch(setpath("/seeuser"));
   };
 
   const handlesearch = (value) => {
@@ -39,16 +39,9 @@ export const Search = () => {
       setvalue(value);
     }
   };
-  useEffect(() => {
-    dispatch(getAllusers());
-    dispatch(loaduser());
-    setseeuser(null);
-    handlesearch(val);
-  }, [usr.following.length]);
 
   return (
     <Main>
-      <Header show={true} />
       <Bottom>
         <Left>
           <p>Search any user</p>
@@ -85,20 +78,7 @@ export const Search = () => {
             )}
           </Win>
         </Left>
-        <Right>
-          {/* {seeuser ? (
-            <div>
-              <img src={seeuser.avatar.url} alt="" />
-              <p>{seeuser.name}</p>
-              <p>{seeuser.followers.length} Followers</p>
-              <p>{seeuser.following.length} Following</p>
-              <p>{seeuser.posts.length} Posts</p>
-              <button>{check(seeuser) ? "Follow" : "Followed"}</button>
-            </div>
-          ) : (
-            <></>
-          )} */}
-        </Right>
+        <Right></Right>
       </Bottom>
     </Main>
   );
@@ -106,13 +86,13 @@ export const Search = () => {
 
 const Main = styled.div`
   height: 100vh;
-  width: 100vw;
+  width: 70vw;
   display: flex;
 `;
 
 const Bottom = styled.div`
-  height: 90vh;
-  width: 100vw;
+  height: 100vh;
+  width: 70vw;
   display: flex;
 `;
 
