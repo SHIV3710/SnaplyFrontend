@@ -9,7 +9,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { FaCircleUser } from "react-icons/fa6";
 import { IoReorderThree } from "react-icons/io5";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Logo from "../Resources/logo.png";
 import { logoutuser } from "../Actions/User";
 import { AiOutlineLogout } from "react-icons/ai";
@@ -18,12 +18,14 @@ import { CgArrowsExchange } from "react-icons/cg";
 
 export const Header = ({ show }) => {
   const dispatch = useDispatch();
-  const [tab, setTab] = useState(window.location.pathname);
+  // const [tab, setTab] = useState(window.location.pathname);
+  const { path } = useSelector((state) => state.user);
   const [account, setaccount] = useState(undefined);
 
-  useEffect(() => {
-    dispatch(setpath(tab));
-  }, [tab]);
+  const setTab = async (tab) => {
+    await dispatch(setpath(tab));
+  };
+
   const handlelogout = () => {
     dispatch(logoutuser());
   };
@@ -32,7 +34,7 @@ export const Header = ({ show }) => {
       <img src={Logo} alt="" />
       <div>
         <Link onClick={() => setTab("/")}>
-          {tab === "/" ? (
+          {path === "/" ? (
             <IoHome style={{ color: "black" }} />
           ) : (
             <IoHomeOutline />
@@ -41,7 +43,7 @@ export const Header = ({ show }) => {
         </Link>
 
         <Link onClick={() => setTab("/newpost")}>
-          {tab === "/newpost" ? (
+          {path === "/newpost" ? (
             <IoIosAddCircle style={{ color: "black" }} />
           ) : (
             <IoIosAddCircleOutline />
@@ -50,7 +52,7 @@ export const Header = ({ show }) => {
         </Link>
 
         <Link onClick={() => setTab("/search")}>
-          {tab === "/search" ? (
+          {path === "/search" ? (
             <IoSearchOutline style={{ color: "black" }} />
           ) : (
             <IoSearchOutline />
@@ -59,7 +61,7 @@ export const Header = ({ show }) => {
         </Link>
 
         <Link onClick={() => setTab("/account")}>
-          {tab === "/account" ? (
+          {path === "/account" ? (
             <FaCircleUser
               style={{ color: "black", padding: show ? "0px 10px" : "0px" }}
             />

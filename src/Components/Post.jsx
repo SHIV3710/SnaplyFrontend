@@ -34,8 +34,8 @@ export const Post = ({
   const [post, setpost] = useState(undefined);
 
   const { id, message } = useSelector((state) => state.like);
-  const { message: ac } = useSelector((state) => state.addcomment);
-  const { message: dc } = useSelector((state) => state.deletecomment);
+  const { loading: ac } = useSelector((state) => state.addcomment);
+  const { loading: dc } = useSelector((state) => state.deletecomment);
 
   const dispatch = useDispatch();
 

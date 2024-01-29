@@ -30,6 +30,7 @@ export const Social = () => {
     } else {
       setcomponent(undefined);
     }
+    // console.log(url);
   }, [path]);
 
   useEffect(() => {
