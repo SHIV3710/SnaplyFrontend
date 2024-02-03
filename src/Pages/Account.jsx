@@ -11,17 +11,19 @@ import {
   addcommentclearMessages,
   changeCaptionclearErrors,
   changeCaptionclearMessages,
+  changeabsolute,
   clearErrors,
   clearMessages,
   deletecommentclearErrors,
   deletecommentclearMessages,
 } from "../Store/Reducers/post";
-import { changepassowrd, deleteProfile } from "../Actions/User";
+import { deleteProfile } from "../Actions/User";
 
 export const Account = () => {
   const dispatch = useDispatch();
   const [show, setshow] = useState(undefined);
   const { user, message, error, auth } = useSelector((state) => state.user);
+  const { component } = useSelector((state) => state.Absolute);
   const { posts } = useSelector((state) => state.mypost);
   const [showcontent, setshowcontent] = useState("0");
 
@@ -44,10 +46,10 @@ export const Account = () => {
   );
 
   const handleprofile = () => {
-    if (showcontent == "0" || showcontent == "1") {
-      setshowcontent("2");
+    if (component === "/editprofile") {
+      dispatch(changeabsolute(null));
     } else {
-      setshowcontent("0");
+      dispatch(changeabsolute("/editprofile"));
     }
   };
   const handledeleteprofile = async () => {
@@ -121,7 +123,7 @@ export const Account = () => {
           <div
             style={{
               height: "100vh",
-              width: "79vw",
+              width: "100vw",
               display: "flex",
               position: "absolute",
               justifyContent: "center",
@@ -204,13 +206,18 @@ const Main = styled.div`
   display: flex;
   align-items: center;
   overflow: hidden;
+  @media screen and (max-width: 800px) {
+    width: 100vw;
+  }
 `;
 const Down = styled.div`
   height: 100vh;
-  /* width: 83vw; */
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
+  @media screen and (max-width: 800px) {
+    width: 100vw;
+  }
 `;
 
 const Top = styled.div`
@@ -221,13 +228,19 @@ const Top = styled.div`
   gap: 5vw;
   align-items: center;
   font-family: "Poppins";
-
+  @media screen and (max-width: 800px) {
+    width: 100vw;
+    height: 25vh;
+  }
   > img {
     height: 10svw;
     width: 10svw;
     object-fit: cover;
     border-radius: 50%;
-    box-shadow: 0 29px 52px rgba(0, 0, 0, 0.4), 0 25px 16px rgba(0, 0, 0, 0.2);
+    @media screen and (max-width: 800px) {
+      width: 20vw;
+      height: 20svw;
+    }
   }
   .detail {
     height: fit-content;
@@ -236,12 +249,20 @@ const Top = styled.div`
     flex-direction: column;
     gap: 2vh;
     justify-content: center;
+    @media screen and (max-width: 800px) {
+      width: 40vw;
+    }
 
     > p {
       display: flex;
       width: 20vw;
       justify-content: space-between;
       align-items: center;
+      @media screen and (max-width: 800px) {
+        width: 40vw;
+        font-size: small;
+        gap: 3vw;
+      }
 
       button {
         height: 4vh;
@@ -252,6 +273,10 @@ const Top = styled.div`
         &:hover {
           background-color: #cbcdcf;
         }
+        @media screen and (max-width: 800px) {
+          width: 25vw;
+          font-size: xx-small;
+        }
       }
     }
   }
@@ -260,6 +285,10 @@ const Top = styled.div`
     width: 20vw;
     justify-content: space-between;
     font-size: small;
+    @media screen and (max-width: 800px) {
+      width: 40vw;
+      font-size: xx-small;
+    }
   }
   .bold {
     font-weight: bold;
@@ -273,6 +302,9 @@ const Bottom = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  @media screen and (max-width: 800px) {
+    width: 100vw;
+  }
 
   gap: 1vw;
   cursor: pointer;
@@ -284,6 +316,10 @@ const Bottom = styled.div`
     justify-content: center;
     gap: 1vw;
     padding: 1vh 0px;
+    overflow: scroll;
+    @media screen and (max-width: 800px) {
+      width: 100vw;
+    }
     img {
       height: 40vh;
       width: 40vh;

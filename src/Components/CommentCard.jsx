@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { deletecomment, getMyPosts, getapost } from "../Actions/Post";
-import { getfollowingpost } from "../Actions/User";
+import { deletecomment } from "../Actions/Post";
 import { MdDelete } from "react-icons/md";
 
 export const CommentCard = ({ comm, isAccount, postId }) => {
@@ -19,7 +18,9 @@ export const CommentCard = ({ comm, isAccount, postId }) => {
       >
         <div className="usr">
           <img src={comm.user.avatar.url} />
-          <p>{comm.user.name}</p>:<span>{comm.comment}</span>
+          <p>{comm.user.name}</p>
+          <p>:</p>
+          <span>{comm.comment}</span>
         </div>
         {isAccount || comm.user._id === user._id ? (
           <MdDelete onClick={handledelete} style={{ color: "red" }} />
@@ -37,8 +38,10 @@ const Main = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-radius: 1rem;
     > svg {
       font-size: 30px;
+      cursor: pointer;
     }
   }
 
@@ -53,15 +56,25 @@ const Main = styled.div`
       max-width: 60%;
       text-overflow: ellipsis;
       white-space: nowrap;
+      @media screen and (max-width: 800px) {
+        font-size: x-small;
+      }
     }
 
     img {
       height: 2rem;
       width: 2rem;
       border-radius: 50%;
+      @media screen and (max-width: 800px) {
+        height: 1rem;
+        width: 1rem;
+      }
     }
     p {
       font-weight: bold;
+      @media screen and (max-width: 800px) {
+        font-size: x-small;
+      }
     }
   }
 `;

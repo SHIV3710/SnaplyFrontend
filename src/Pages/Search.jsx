@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
-import { Header } from "../Components/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { anyuser, getAllusers, loaduser } from "../Actions/User";
+import { anyuser } from "../Actions/User";
 import { User } from "../Components/User";
-import { useNavigate } from "react-router-dom";
 import { setpath } from "../Store/Reducers/user";
+import { changeabsolute } from "../Store/Reducers/post";
 
 export const Search = () => {
   const [user, setuser] = useState([]);
   const [val, setvalue] = useState("");
   const [seeuser, setseeuser] = useState(null);
   const { users } = useSelector((state) => state.allUsers);
-  const { user: usr } = useSelector((state) => state.user);
+  const { user: usr, path } = useSelector((state) => state.user);
+  const { component } = useSelector((state) => state.Absolute);
 
   const dispatch = useDispatch();
   const check = (user) => {
@@ -26,6 +26,7 @@ export const Search = () => {
   const handleseeuser = async (user) => {
     await dispatch(anyuser(user._id));
     await dispatch(setpath("/seeuser"));
+    await dispatch(changeabsolute(null));
   };
 
   const handlesearch = (value) => {
@@ -41,7 +42,7 @@ export const Search = () => {
   };
 
   return (
-    <Main>
+    <Main style={{ display: component === "/search" ? "flex" : "none" }}>
       <Bottom>
         <Left>
           <p>Search any user</p>
@@ -86,19 +87,26 @@ export const Search = () => {
 
 const Main = styled.div`
   height: 100vh;
-  width: 70vw;
-  display: flex;
+  width: 27vw;
+  background-color: white;
+  position: absolute;
+  z-index: 999;
+  align-items: center;
+  transition: 2s ease;
+  justify-content: center;
+  @media screen and (max-width: 800px) {
+    width: 40vw;
+  }
 `;
 
 const Bottom = styled.div`
   height: 100vh;
-  width: 70vw;
   display: flex;
+  justify-content: center;
 `;
 
 const Left = styled.div`
   height: 90vh;
-  width: 30vw;
   display: flex;
   flex-direction: column;
   gap: 5vh;
@@ -109,6 +117,9 @@ const Left = styled.div`
     margin-top: 5vh;
     font-size: x-large;
     color: #000000;
+    @media screen and (max-width: 800px) {
+      font-size: small;
+    }
   }
 
   input {
@@ -118,6 +129,10 @@ const Left = styled.div`
     border-radius: 0.5rem;
     text-indent: 1vw;
     font-family: "Poppins";
+    @media screen and (max-width: 800px) {
+      height: 3vh;
+      font-size: x-small;
+    }
 
     &:focus {
       outline: none;
@@ -126,26 +141,24 @@ const Left = styled.div`
 `;
 
 const Win = styled.div`
-  position: absolute;
   top: 35%;
   border-radius: 1rem;
   width: 25vw;
   height: 40vh;
-  /* background-color: black; */
 `;
 
 const Right = styled.div`
   height: 90vh;
-  width: 70vw;
+  /* width: 70vw; */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   gap: 5vh;
 
   > div {
     height: 90%;
-    width: 40%;
+    /* width: 40%; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -157,7 +170,7 @@ const Right = styled.div`
 
     img {
       height: 10vw;
-      width: 10vw;
+      /* width: 10vw; */
       border-radius: 50%;
       border: 5px solid #00acdf;
     }

@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Header } from "../Components/Header";
 import { FaRegImage } from "react-icons/fa6";
 import { BiPaperclip } from "react-icons/bi";
 import { addPost } from "../Actions/Post";
 import { useDispatch, useSelector } from "react-redux";
-import { addPostclearMessages } from "../Store/Reducers/post";
+import { addPostclearMessages, changeabsolute } from "../Store/Reducers/post";
+import { RxCross2 } from "react-icons/rx";
 
 export const CreatePost = () => {
   const dispatch = useDispatch();
   const [image, setimage] = useState(undefined);
   const [caption, setcaption] = useState("");
   const { loading, message } = useSelector((state) => state.addpost);
+  const { component } = useSelector((state) => state.Absolute);
   const handleimagechange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
         const imageData = reader.result;
-        console.log(imageData);
         setimage(imageData);
       };
       reader.readAsDataURL(file);
@@ -27,7 +27,8 @@ export const CreatePost = () => {
 
   const handlecreatepost = async () => {
     if (image && caption) {
-      dispatch(addPost(image, caption));
+      await dispatch(addPost(image, caption));
+      await dispatch(changeabsolute(null));
     }
   };
 
@@ -38,61 +39,30 @@ export const CreatePost = () => {
   }, [message]);
 
   return (
-    <Main>
-      <>
-        <Bottom>
-          <Post>
-            <div>
-              {image != null ? (
-                <>
-                  <img
-                    style={{
-                      height: "30vh",
-                      width: "30vh",
-                      borderRadius: "0.5rem",
-                      objectFit: "contain",
-                    }}
-                    src={image}
-                    alt="Your New Post"
-                  />
-                </>
-              ) : (
-                <p
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "2rem",
-                    backgroundColor: "#000000",
-                    width: "20vw",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: "1rem",
-                  }}
-                >
-                  Create Post
-                </p>
-              )}
-            </div>
-            <div
-              className="caption"
-              style={{
-                color: "#000000",
-              }}
-            >
-              Caption
-              <textarea
-                placeholder="Add a caption to your post"
-                style={{
-                  height: "25vh",
-                  width: "30vw",
-                  fontFamily: "Poppins",
-                  borderRadius: "0.3rem",
-                  textIndent: "10px",
-                  background: "transparent",
-                }}
-                onChange={(e) => setcaption(e.target.value)}
-              ></textarea>
-            </div>
+    <Main style={{ display: component === "/newpost" ? "flex" : "none" }}>
+      <Bottom>
+        <Post>
+          <div>
+            {image != null ? (
+              <>
+                <img src={image} alt="Your New Post" />
+              </>
+            ) : (
+              <p>Create Post</p>
+            )}
+          </div>
+          <div
+            className="caption"
+            style={{
+              color: "#000000",
+            }}
+          >
+            Caption
+            <textarea
+              placeholder="Add a caption to your post"
+              style={{}}
+              onChange={(e) => setcaption(e.target.value)}
+            ></textarea>
             <div className="button">
               <FaRegImage />
               <label>
@@ -100,30 +70,39 @@ export const CreatePost = () => {
                 <BiPaperclip />
               </label>
             </div>
-            <button disabled={loading} onClick={handlecreatepost}>
-              Post
-            </button>
-          </Post>
-        </Bottom>
-      </>
+          </div>
+          <button disabled={loading} onClick={handlecreatepost}>
+            Post
+          </button>
+        </Post>
+      </Bottom>
+      <RxCross2
+        onClick={() => dispatch(changeabsolute(null))}
+        style={{
+          position: "absolute",
+          top: "5%",
+          right: "5%",
+          fontSize: "xx-large",
+          color: "white",
+        }}
+      />
     </Main>
   );
 };
 
 const Main = styled.div`
   height: 100vh;
-  width: 79vw;
-  display: flex;
+  width: 100vw;
   align-items: center;
+  align-self: center;
   justify-content: center;
-`;
-const Head = styled.div`
-  height: 100vh;
-  width: 20vw;
+  position: absolute;
+  z-index: 999;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.5);
 `;
 const Bottom = styled.div`
   height: 90vh;
-  width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -131,26 +110,68 @@ const Bottom = styled.div`
 const Post = styled.div`
   height: 70vh;
   width: 40vw;
-  backdrop-filter: blur(45px);
+  background-color: white;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   font-family: "Poppins";
   align-items: center;
-  color: white;
-  gap: 1vw;
+  color: #000000;
+  gap: 1vh;
+  @media screen and (max-width: 800px) {
+    width: 80vw;
+    height: 50vh;
+  }
+
+  > div > img {
+    height: 20vh;
+    border-radius: 50%;
+    object-fit: contain;
+    @media screen and (max-width: 800px) {
+      height: 10vh;
+    }
+  }
+
+  > div > p {
+    font-weight: bold;
+    font-size: 2rem;
+    color: #000000;
+    width: 20vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    @media screen and (max-width: 800px) {
+      width: 60vw;
+      font-size: 1.5rem;
+    }
+  }
 
   .caption {
     display: flex;
     flex-direction: column;
     font-weight: bold;
     gap: 1vh;
+    color: white;
+    @media screen and (max-width: 800px) {
+      width: 70vw;
+    }
   }
   textarea {
+    height: 25vh;
+    width: 30vw;
+    font-family: Poppins;
+    border-radius: 0.3rem;
+    text-indent: 10px;
+    background-color: transparent;
     resize: none;
+    color: #000000;
     &:focus {
       outline: none;
+    }
+    @media screen and (max-width: 800px) {
+      width: 70vw;
     }
   }
 
@@ -181,6 +202,9 @@ const Post = styled.div`
     height: 4vh;
     background-color: #000000;
     border-radius: 1rem;
+    @media screen and (max-width: 800px) {
+      width: 15vw;
+    }
   }
   button:hover {
     font-weight: bold;

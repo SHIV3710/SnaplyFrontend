@@ -1,19 +1,11 @@
 import "./App.css";
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  useSearchParams,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Social } from "./Pages/Social";
 import { Signup } from "./Pages/Signup";
 import { Login } from "./Pages/Login";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { loaduser } from "./Actions/User";
-import { Account } from "./Pages/Account";
-import { CreatePost } from "./Pages/CreatePost";
-import { Search } from "./Pages/Search";
 import { AnyUser } from "./Pages/AnyUser";
 
 export default function App() {

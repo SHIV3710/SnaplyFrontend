@@ -247,8 +247,8 @@ export const changecaption = changeCaption.reducer;
 export const absolute = createSlice({
   name: "absolute",
   initialState: {
-    component: undefined,
-    post: undefined,
+    component: null,
+    post: null,
   },
   reducers: {
     changeabsolute: (state, action) => {

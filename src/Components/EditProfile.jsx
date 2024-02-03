@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { RxCross2 } from "react-icons/rx";
-import { changeabsolute } from "../Store/Reducers/post";
+import { absolute, changeabsolute } from "../Store/Reducers/post";
 import { RiEye2Line } from "react-icons/ri";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { changepassword } from "../Actions/User";
 
-export const ChangePassword = () => {
+export const EditProfile = () => {
   const { component } = useSelector((state) => state.Absolute);
   const [oldp, setoldp] = useState(false);
   const [newp, setnewp] = useState(false);
@@ -24,12 +24,12 @@ export const ChangePassword = () => {
   return (
     <Main
       style={{
-        display: component === "/changepassword" ? "flex" : "none",
+        display: component === "/editprofile" ? "flex" : "none",
       }}
     >
       <div>
         <p>Change Password</p>
-        <div style={{ position: "relative" }}>
+        <div>
           <p>Old Password</p>
           {!oldp ? (
             <RiEyeCloseLine
@@ -38,8 +38,8 @@ export const ChangePassword = () => {
               }}
               style={{
                 position: "absolute",
-                left: "90%",
-                top: "50%",
+                left: "58%",
+                top: "43%",
                 zIndex: "999",
                 cursor: "pointer",
               }}
@@ -51,8 +51,8 @@ export const ChangePassword = () => {
               }}
               style={{
                 position: "absolute",
-                left: "90%",
-                top: "50%",
+                left: "58%",
+                top: "42.5%",
                 cursor: "pointer",
               }}
             />
@@ -65,7 +65,7 @@ export const ChangePassword = () => {
             }}
           />
         </div>
-        <div style={{ position: "relative" }}>
+        <div>
           <p>New Password</p>
           {!newp ? (
             <RiEyeCloseLine
@@ -74,8 +74,8 @@ export const ChangePassword = () => {
               }}
               style={{
                 position: "absolute",
-                left: "90%",
-                top: "50%",
+                left: "58%",
+                top: "58%",
                 cursor: "pointer",
               }}
             />
@@ -86,8 +86,8 @@ export const ChangePassword = () => {
               }}
               style={{
                 position: "absolute",
-                left: "90%",
-                top: "50%",
+                left: "58%",
+                top: "57.5%",
                 cursor: "pointer",
               }}
             />
@@ -139,9 +139,6 @@ const Main = styled.div`
     background-color: rgb(255, 255, 255, 0.3);
     border: 1px solid gray;
     border-radius: 0.4rem;
-    @media screen and (max-width: 800px) {
-      width: 50vw;
-    }
     &:focus {
       outline: none;
     }
@@ -155,9 +152,6 @@ const Main = styled.div`
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    @media screen and (max-width: 800px) {
-      width: 60vw;
-    }
   }
 
   button {
@@ -168,9 +162,6 @@ const Main = styled.div`
     cursor: pointer;
     &:hover {
       background-color: rgb(3, 188, 255);
-    }
-    @media screen and (max-width: 800px) {
-      width: 15vw;
     }
   }
 `;

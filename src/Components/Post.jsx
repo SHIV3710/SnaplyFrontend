@@ -9,22 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   commentonpost,
   deletepost,
-  getMyPosts,
   getapost,
   likepost,
   updatecaption,
 } from "../Actions/Post";
-import { anyuser, getfollowingpost } from "../Actions/User";
 import { AllLike } from "./AllLike";
 import { AllComments } from "./AllComments";
 
-export const Post = ({
-  postId,
-  likes = [],
-  comments = [],
-  isDelete = false,
-  isAccount = false,
-}) => {
+export const Post = ({ postId, isDelete = false, isAccount = false }) => {
   const [liked, setliked] = useState(false);
   const [alllikes, setlikes] = useState(false);
   const [allcomment, setallcomment] = useState(false);
@@ -99,8 +91,22 @@ export const Post = ({
     <>
       {post ? (
         <>
-          {" "}
           <Main>
+            {alllikes ? (
+              <AllLike users={post.likes} func={handletotallike} />
+            ) : (
+              <></>
+            )}
+            {allcomment ? (
+              <AllComments
+                isAccount={isAccount}
+                comments={post.comments}
+                postId={postId}
+                func={handleallcomment}
+              />
+            ) : (
+              <></>
+            )}
             <img src={post.image.url} alt="Post" />
             <PostDetail>
               <div className="icon">
@@ -114,16 +120,6 @@ export const Post = ({
                   onClick={handleallcomment}
                 />
                 {isDelete ? <TbHttpDelete onClick={handlepostdelete} /> : null}
-                {alllikes ? <AllLike users={post.likes} /> : <></>}
-                {allcomment ? (
-                  <AllComments
-                    isAccount={isAccount}
-                    comments={post.comments}
-                    postId={postId}
-                  />
-                ) : (
-                  <></>
-                )}
               </div>
               <Link>
                 <p
@@ -138,7 +134,7 @@ export const Post = ({
                 </p>
               </Link>
               <div style={{ fontStyle: "italic" }} className="caption">
-                {post.caption}
+                Caption: {post.caption}
               </div>
               <div
                 className="likes"
@@ -196,12 +192,13 @@ export const Post = ({
 };
 
 const Main = styled.div`
-  width: max-content;
+  width: fit-content;
+  height: fit-content;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 12px;
+  border-radius: 5px;
   row-gap: 0.2vh;
   font-family: "Poppins", sans-serif;
   user-select: none;
@@ -210,26 +207,35 @@ const Main = styled.div`
   position: relative;
   background-size: cover;
   border: 1px solid gray;
+  @media screen and (max-width: 800px) {
+    width: fit-content;
+    height: fit-content;
+    padding: 0.5vh;
+  }
   > img {
     height: 25rem;
-    width: 50vw;
+    width: 60vw;
     border: 2px solid grey;
-    border-radius: 8px;
+    border-radius: 2px;
     object-fit: contain;
     background-color: black;
     @media screen and (max-width: 800px) {
-      width: 95%;
+      min-height: 10vh;
+      height: 20vh;
+      width: 80vw;
     }
   }
 `;
 const PostDetail = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   width: 97%;
-  height: 18vh;
+  gap: 0.5vh;
   cursor: pointer;
   font-size: small;
+  @media screen and (max-width: 800px) {
+    font-size: xx-small;
+  }
 
   > a {
     display: flex;
@@ -250,8 +256,11 @@ const PostDetail = styled.div`
   .icon {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 1vw;
     font-size: 2rem;
+    @media screen and (max-width: 800px) {
+      font-size: large;
+    }
   }
   .caption {
     white-space: nowrap;
@@ -264,16 +273,20 @@ const Comment = styled.div`
   max-height: 40px;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 
   input {
     height: 20px;
-    width: 45vw;
+    width: 55vw;
     background: transparent;
     border: none;
     border-bottom: 1px solid #000000;
     font-family: "Poppins", sans-serif;
+    font-size: xx-small;
+    @media screen and (max-width: 800px) {
+      width: 70vw;
+    }
   }
   input:focus {
     outline: none;
@@ -291,6 +304,10 @@ const Comment = styled.div`
     cursor: pointer;
     border: none;
     color: #00acdf;
+    @media screen and (max-width: 800px) {
+      font-size: x-small;
+      justify-content: end;
+    }
   }
   button:hover {
     color: #000000;
@@ -307,5 +324,8 @@ const Caption = styled.div`
   color: #00a2ff;
   &:hover {
     color: #000000;
+  }
+  @media screen and (max-width: 800px) {
+    font-size: small;
   }
 `;

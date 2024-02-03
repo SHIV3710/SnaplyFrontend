@@ -4,24 +4,23 @@ import { Header } from "../Components/Header";
 import { User } from "../Components/User";
 import { useDispatch, useSelector } from "react-redux";
 import { Post } from "../Components/Post";
-import { followuser, getAllusers, getfollowingpost } from "../Actions/User";
+import { getAllusers, getfollowingpost } from "../Actions/User";
 import { CreatePost } from "./CreatePost";
 import { Search } from "./Search";
 import { AnyUser } from "./AnyUser";
 import { Account } from "./Account";
 import { ChangePassword } from "../Components/ChangePassword";
+import { EditProfile } from "../Components/EditProfile";
 
 export const Social = () => {
   const dispatch = useDispatch();
   let [component, setcomponent] = useState(undefined);
-  const { path, user } = useSelector((state) => state.user);
+  const { path, user, message } = useSelector((state) => state.user);
+  const { posts } = useSelector((state) => state.postoffollwing);
+
   useEffect(() => {
     let url = path;
-    if (url === "/newpost") {
-      setcomponent(<CreatePost />);
-    } else if (url === "/search") {
-      setcomponent(<Search />);
-    } else if (url === "/account") {
+    if (url === "/account") {
       setcomponent(<Account />);
     } else if (url === "/seeuser") {
       setcomponent(<AnyUser />);
@@ -30,32 +29,33 @@ export const Social = () => {
     } else {
       setcomponent(undefined);
     }
-    // console.log(url);
   }, [path]);
 
   useEffect(() => {
     dispatch(getfollowingpost());
     dispatch(getAllusers());
-  }, [user]);
+  }, [message]);
 
   const check = (user) => {
     let len = user.followers.length;
     for (let i = 0; i < len; i++) {
-      if (user.followers[i] == loginuserid) return false;
+      if (user.followers[i] === loginuserid) return false;
     }
     return true;
   };
   let loginuserid = user._id;
-
-  const { posts } = useSelector((state) => state.postoffollwing);
   const { users } = useSelector((state) => state.allUsers);
 
   return (
     <Main>
+      <CreatePost />
+      <ChangePassword />
+      <EditProfile />
       <Head>
         <Header />
       </Head>
       <Bottom>
+        <Search />
         {component ? (
           <>{component}</>
         ) : (
@@ -70,18 +70,7 @@ export const Social = () => {
               )}
             </Left>
             <Right>
-              <div
-                className="user"
-                style={{
-                  fontSize: "1rem",
-                  height: "5vh",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                Suggested for you
-              </div>
+              <div className="user">Suggested for you</div>
               <div className="users">
                 {users && users.length > 0 ? (
                   <>
@@ -94,16 +83,6 @@ export const Social = () => {
                             key={index}
                             avatar={user.avatar.url}
                             follow={false}
-                          />
-                        );
-                      } else if (!check(user)) {
-                        return (
-                          <User
-                            Id={user._id}
-                            name={user.name}
-                            key={index}
-                            avatar={user.avatar.url}
-                            follow={true}
                           />
                         );
                       }
@@ -122,18 +101,33 @@ export const Social = () => {
 };
 
 const Main = styled.div`
-  height: 100vh;
-  width: 100vw;
+  min-height: 100svh;
+  width: 100svw;
   display: flex;
   gap: 1vw;
+  z-index: 900;
+  position: relative;
   user-select: none;
+  @media screen and (max-width: 800px) {
+    flex-direction: column-reverse;
+    gap: 0;
+  }
 `;
 const Head = styled.div`
   height: 100vh;
+  @media screen and (max-width: 800px) {
+    height: 10vh;
+    width: 100vw;
+  }
 `;
 const Bottom = styled.div`
   height: 100vh;
   display: flex;
+  @media screen and (max-width: 800px) {
+    flex-direction: row;
+    height: 90vh;
+    width: 100vw;
+  }
 `;
 const Left = styled.div`
   height: 100vh;
@@ -143,27 +137,43 @@ const Left = styled.div`
   align-items: center;
   overflow: hidden;
   overflow-y: scroll;
+  @media screen and (max-width: 800px) {
+    height: 90vh;
+    width: 100vw;
+  }
 `;
 const Right = styled.div`
   display: flex;
-  /* width: 20vw; */
   flex-direction: column;
-  align-items: start;
+  align-items: center;
+  @media screen and (max-width: 800px) {
+    height: 90vh;
+    width: 15vw;
+    display: none;
+  }
 
   .user {
-    font-size: x-large;
+    font-size: large;
     font-family: "Poppins";
     backdrop-filter: blur(10px);
     margin: 1vh 0;
-    width: 15vw;
+    width: 20vw;
+    height: 5vh;
     text-align: center;
     border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @media screen and (max-width: 800px) {
+      font-size: xx-small;
+      margin: 0;
+    }
   }
   .users {
-    /* width: 90%; */
     border-radius: 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: self-start;
+    width: 90%;
   }
 `;

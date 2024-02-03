@@ -1,14 +1,19 @@
 import React from "react";
 import styled from "styled-components";
+import { RxCross2 } from "react-icons/rx";
+import { User } from "./User";
 
-export const AllLike = (users) => {
+export const AllLike = ({ users, func }) => {
   return (
     <Main>
-      <div className="content">Likes</div>
+      <div className="content">
+        Likes <RxCross2 onClick={() => func()} />
+      </div>
+
       <div className="likes">
-        {users.users.map((user, index) => {
+        {users.map((user, index) => {
           return (
-            <div className="usr" key={index}>
+            <div className="usr">
               <img src={user.avatar.url} />
               <p>{user.name}</p>
             </div>
@@ -23,13 +28,25 @@ const Main = styled.div`
   width: 50%;
   position: absolute;
   border-radius: 10px;
-  background-color: white;
+  background-color: rgb(255, 255, 255, 0.8);
   left: 30%;
   top: 10%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  align-items: center;
+  @media screen and (max-width: 800px) {
+    height: 80%;
+    width: 70%;
+    left: 15%;
+    top: 10%;
+  }
+
+  svg {
+    position: absolute;
+    left: 90%;
+    top: 5%;
+    cursor: pointer;
+  }
 
   .likes {
     ::-webkit-scrollbar {
@@ -38,7 +55,19 @@ const Main = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2vh;
+    cursor: pointer;
     padding-top: 1vh;
+    .usr {
+      display: flex;
+      gap: 1vw;
+      margin-left: 1vw;
+      align-items: center;
+      > img {
+        height: 2rem;
+        width: 2rem;
+        border-radius: 50%;
+      }
+    }
   }
   .content {
     height: 20%;
@@ -49,23 +78,5 @@ const Main = styled.div`
     font-family: "Poppins", sans-serif;
     font-weight: bold;
     font-size: x-large;
-  }
-  .usr {
-    display: flex;
-    align-items: center;
-    gap: 1vh;
-    font-size: 15px;
-    overflow: hidden;
-    > span {
-      max-width: 60%;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    img {
-      height: 2rem;
-      width: 2rem;
-      border-radius: 50%;
-    }
   }
 `;

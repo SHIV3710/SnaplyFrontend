@@ -1,15 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
-import Image from "../Pictures/login-back2.jpg";
-import { LuLogIn } from "react-icons/lu";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa6";
-import {
-  Link,
-  Navigate,
-  createSearchParams,
-  useNavigate,
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RiEye2Line } from "react-icons/ri";
 import { RiEyeCloseLine } from "react-icons/ri";
 import sky from "../Pictures/sky.jpg";
@@ -19,9 +10,9 @@ import { useDispatch } from "react-redux";
 
 export const Signup = () => {
   const [show, setshow] = useState(false);
-  const [email, setemail] = useState();
-  const [password, setpassword] = useState();
-  const [name, setname] = useState();
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
+  const [name, setname] = useState("");
   const [image, setimage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -46,7 +37,6 @@ export const Signup = () => {
       };
       reader.readAsDataURL(file);
     }
-    // encodeURIComponent;
   };
 
   return (

@@ -1,22 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Header } from "../Components/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { getMyPosts, getapost } from "../Actions/Post";
 import { Post } from "../Components/Post";
 import { RxCross2 } from "react-icons/rx";
-import { useLocation, useNavigate } from "react-router-dom";
-import { UpdatePofile } from "../Components/UpdatePofile";
-import { anyuser, followuser } from "../Actions/User";
+import { followuser } from "../Actions/User";
 import { changepost } from "../Store/Reducers/post";
+import { Search } from "./Search";
+import { CreatePost } from "./CreatePost";
 export const AnyUser = () => {
   const dispatch = useDispatch();
   const [show, setshow] = useState(undefined);
   const { seeuser } = useSelector((state) => state.user);
   const { post } = useSelector((state) => state.Absolute);
   const { loading } = useSelector((state) => state.like);
-  const { message: ac } = useSelector((state) => state.addcomment);
-  const { message: dc } = useSelector((state) => state.deletecomment);
   const [follow, setfollow] = useState(false);
   const handleimage = async (value) => {
     dispatch(changepost(value));
@@ -33,6 +29,8 @@ export const AnyUser = () => {
 
   return (
     <>
+      <Search />
+      <CreatePost />
       {!seeuser ? (
         <></>
       ) : (
@@ -44,7 +42,7 @@ export const AnyUser = () => {
               <div
                 style={{
                   height: "100vh",
-                  width: "80vw",
+                  width: "100vw",
                   display: "flex",
                   position: "absolute",
                   justifyContent: "center",
@@ -127,13 +125,12 @@ const Main = styled.div`
   height: 100vh;
   display: flex;
   align-items: center;
-  overflow: hidden;
+  overflow: scroll;
 `;
 const Down = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
 `;
 
 const Top = styled.div`
@@ -144,6 +141,9 @@ const Top = styled.div`
   gap: 5vw;
   align-items: center;
   font-family: "Poppins";
+  @media screen and (max-width: 800px) {
+    width: 100vw;
+  }
 
   > img {
     height: 10svw;
@@ -159,12 +159,18 @@ const Top = styled.div`
     flex-direction: column;
     gap: 2vh;
     justify-content: center;
+    @media screen and (max-width: 800px) {
+      width: 40vw;
+    }
 
     > p {
       display: flex;
       width: 20vw;
       gap: 2vw;
       align-items: center;
+      @media screen and (max-width: 800px) {
+        width: 40vw;
+      }
 
       button {
         height: 4vh;
@@ -183,6 +189,9 @@ const Top = styled.div`
     width: 20vw;
     justify-content: space-between;
     font-size: small;
+    @media screen and (max-width: 800px) {
+      width: 40vw;
+    }
   }
   .bold {
     font-weight: bold;
@@ -196,22 +205,30 @@ const Bottom = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  @media screen and (max-width: 800px) {
+    width: 100vw;
+  }
 
   gap: 1vw;
   cursor: pointer;
 
   .post {
     display: flex;
-    width: 70vw;
+    width: 60vw;
     flex-wrap: wrap;
     justify-content: center;
     gap: 1vw;
     padding: 1vh 0px;
+    overflow: scroll;
     img {
       height: 40vh;
       width: 40vh;
       border-radius: 1rem;
       object-fit: cover;
+      @media screen and (max-width: 800px) {
+        height: 30vh;
+        width: 30vh;
+      }
     }
   }
 `;
