@@ -27,11 +27,14 @@ import Cookies from "js-cookie";
 export const likepost = (id) => async (dispatch) => {
   try {
     dispatch(likeRequest());
-    const { data } = await axios.get(`api/v1/post/${id}`, {
-      params: {
-        token: Cookies.get("token"),
-      },
-    });
+    const { data } = await axios.get(
+      `https://snaply-backend.onrender.com/api/v1/post/${id}`,
+      {
+        params: {
+          token: Cookies.get("token"),
+        },
+      }
+    );
     dispatch(likeSuccess({ id: id, message: data.message }));
   } catch (error) {
     dispatch(likeFailure(error));
@@ -42,7 +45,7 @@ export const commentonpost = (id, comment, user) => async (dispatch) => {
   try {
     dispatch(addcommentRequest());
     const { data } = await axios.put(
-      `api/v1/post/comment/${id}`,
+      `https://snaply-backend.onrender.com/api/v1/post/comment/${id}`,
       {
         comment: comment,
         user: user,
@@ -68,7 +71,7 @@ export const deletecomment = (id, commentid) => async (dispatch) => {
   try {
     dispatch(deletecommentRequest());
     const { data } = await axios.post(
-      `api/v1/post/comment/${id}`,
+      `https://snaply-backend.onrender.com/api/v1/post/comment/${id}`,
       {
         commentid,
       },
@@ -92,11 +95,14 @@ export const deletecomment = (id, commentid) => async (dispatch) => {
 export const getMyPosts = () => async (dispatch) => {
   try {
     dispatch(MypostsRequest());
-    const { data } = await axios.get(`api/v1/profile/post`, {
-      params: {
-        token: Cookies.get("token"),
-      },
-    });
+    const { data } = await axios.get(
+      `https://snaply-backend.onrender.com/api/v1/profile/post`,
+      {
+        params: {
+          token: Cookies.get("token"),
+        },
+      }
+    );
     dispatch(MypostsSuccess(data.posts));
   } catch (error) {
     dispatch(MypostsFailure(error));
@@ -107,7 +113,7 @@ export const addPost = (image, caption) => async (dispatch) => {
   try {
     dispatch(addPostRequest());
     const { data } = await axios.post(
-      `api/v1/post/upload`,
+      `https://snaply-backend.onrender.com/api/v1/post/upload`,
       {
         caption: caption,
         image: image,
@@ -131,7 +137,7 @@ export const updatecaption = (id, caption) => async (dispatch) => {
   try {
     dispatch(changeCaptionRequest());
     const { data } = await axios.put(
-      `api/v1/post/${id}`,
+      `https://snaply-backend.onrender.com/api/v1/post/${id}`,
       {
         caption: caption,
       },
@@ -148,11 +154,14 @@ export const updatecaption = (id, caption) => async (dispatch) => {
 export const deletepost = (id) => async (dispatch) => {
   try {
     dispatch(deletePostRequest());
-    const { data } = await axios.delete(`api/v1/post/${id}`, {
-      params: {
-        token: Cookies.get("token"),
-      },
-    });
+    const { data } = await axios.delete(
+      `https://snaply-backend.onrender.com/api/v1/post/${id}`,
+      {
+        params: {
+          token: Cookies.get("token"),
+        },
+      }
+    );
     dispatch(deletePostSuccess(data.message));
   } catch (error) {
     dispatch(deletePostFailure(error));
@@ -161,7 +170,9 @@ export const deletepost = (id) => async (dispatch) => {
 
 export const getapost = async (id) => {
   try {
-    const { data } = await axios.get(`api/v1/getpost/${id}`);
+    const { data } = await axios.get(
+      `https://snaply-backend.onrender.com/api/v1/getpost/${id}`
+    );
     return data.post;
   } catch (error) {
     return error;

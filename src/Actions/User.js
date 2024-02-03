@@ -35,7 +35,7 @@ export const loginuser = (email, password) => async (dispatch) => {
   try {
     dispatch(LoginRequest());
     const { data } = await axios.post(
-      "api/v1/login",
+      "https://snaply-backend.onrender.com/api/v1/login",
       { email, password },
       {
         headers: {
@@ -53,11 +53,14 @@ export const loginuser = (email, password) => async (dispatch) => {
 export const loaduser = () => async (dispatch) => {
   try {
     dispatch(LoadUserRequest());
-    const { data } = await axios.get("api/v1/profile", {
-      params: {
-        token: Cookies.get("token"),
-      },
-    });
+    const { data } = await axios.get(
+      "https://snaply-backend.onrender.com/api/v1/profile",
+      {
+        params: {
+          token: Cookies.get("token"),
+        },
+      }
+    );
     dispatch(LoadUserSuccess(data.user));
   } catch (error) {
     dispatch(LoadUserFailure(error.message));
@@ -67,11 +70,14 @@ export const loaduser = () => async (dispatch) => {
 export const getfollowingpost = () => async (dispatch) => {
   try {
     dispatch(postoffollowingRequest());
-    const { data } = await axios.get("api/v1/posts", {
-      params: {
-        token: Cookies.get("token"),
-      },
-    });
+    const { data } = await axios.get(
+      "https://snaply-backend.onrender.com/api/v1/posts",
+      {
+        params: {
+          token: Cookies.get("token"),
+        },
+      }
+    );
     dispatch(postoffollowingSuccess(data.posts));
   } catch (error) {
     dispatch(postoffollowingFailure(error.response.data.message));
@@ -81,11 +87,14 @@ export const getfollowingpost = () => async (dispatch) => {
 export const getAllusers = () => async (dispatch) => {
   try {
     dispatch(allUsersRequest());
-    const { data } = await axios.get("api/v1/allusers", {
-      params: {
-        token: Cookies.get("token"),
-      },
-    });
+    const { data } = await axios.get(
+      "https://snaply-backend.onrender.com/api/v1/allusers",
+      {
+        params: {
+          token: Cookies.get("token"),
+        },
+      }
+    );
     dispatch(allUsersSuccess(data.Users));
   } catch (error) {
     dispatch(allUsersFailure(error));
@@ -97,7 +106,7 @@ export const signupuser =
     try {
       dispatch(LoadUserRequest());
       const { data } = await axios.post(
-        "api/v1/register",
+        "https://snaply-backend.onrender.com/api/v1/register",
         { name, email, password, image },
         {
           headers: {
@@ -115,11 +124,14 @@ export const signupuser =
 export const logoutuser = () => async (dispatch) => {
   try {
     dispatch(logoutRequest());
-    const { data } = await axios.get("api/v1/logout", {
-      params: {
-        token: Cookies.get("token"),
-      },
-    });
+    const { data } = await axios.get(
+      "https://snaply-backend.onrender.com/api/v1/logout",
+      {
+        params: {
+          token: Cookies.get("token"),
+        },
+      }
+    );
     Cookies.set("token", null);
     dispatch(logoutSuccess(data.message));
   } catch (error) {
@@ -132,7 +144,7 @@ export const changepassword =
     try {
       dispatch(changePasswordRequest());
       const { data } = await axios.put(
-        "api/v1/update/password",
+        "https://snaply-backend.onrender.com/api/v1/update/password",
         {
           oldPassword,
           newPassword,
@@ -158,7 +170,7 @@ export const changeprofile = (name, email, avatar) => async (dispatch) => {
   try {
     dispatch(changeProfileRequest());
     const { data } = await axios.put(
-      "api/v1/update/profile",
+      "https://snaply-backend.onrender.com/api/v1/update/profile",
       {
         name,
         email,
@@ -184,7 +196,9 @@ export const changeprofile = (name, email, avatar) => async (dispatch) => {
 export const deleteProfile = () => async (dispatch) => {
   try {
     dispatch(deleteProfileRequest());
-    const { data } = await axios.delete("api/v1/delete/me");
+    const { data } = await axios.delete(
+      "https://snaply-backend.onrender.com/api/v1/delete/me"
+    );
     dispatch(deleteProfileSuccess(data.message));
   } catch (error) {
     dispatch(deleteProfileFailure(error.res.message));
@@ -194,11 +208,14 @@ export const deleteProfile = () => async (dispatch) => {
 export const followuser = (id) => async (dispatch) => {
   try {
     dispatch(followUserRequest());
-    const { data } = await axios.get(`api/v1/follow/${id}`, {
-      params: {
-        token: Cookies.get("token"),
-      },
-    });
+    const { data } = await axios.get(
+      `https://snaply-backend.onrender.com/api/v1/follow/${id}`,
+      {
+        params: {
+          token: Cookies.get("token"),
+        },
+      }
+    );
     dispatch(followUserSuccess(data.message));
   } catch (error) {
     dispatch(followUserFailure(error.res.message));
@@ -208,11 +225,14 @@ export const followuser = (id) => async (dispatch) => {
 export const anyuser = (id) => async (dispatch) => {
   try {
     dispatch(anyuserRequest());
-    const { data } = await axios.get(`api/v1/profile/${id}`, {
-      params: {
-        token: Cookies.get("token"),
-      },
-    });
+    const { data } = await axios.get(
+      `https://snaply-backend.onrender.com/api/v1/profile/${id}`,
+      {
+        params: {
+          token: Cookies.get("token"),
+        },
+      }
+    );
     dispatch(anyuserSuccess(data.user));
   } catch (error) {
     dispatch(anyuserFailure(error));
