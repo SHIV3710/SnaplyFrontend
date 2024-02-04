@@ -127,7 +127,7 @@ const Main = styled.div`
   transition: 1s ease;
   background-color: white;
   z-index: 999;
-  /* position: fixed; */
+  -webkit-tap-highlight-color: transparent;
   @media screen and (max-width: 1200px) {
     width: 16vw;
   }
@@ -196,11 +196,13 @@ const Main = styled.div`
   .absolute {
     display: flex;
     gap: 2vh;
-    font-size: small;
     cursor: pointer;
     position: absolute;
     top: 80%;
     user-select: none;
+    span {
+      font-size: x-small;
+    }
     @media screen and (max-width: 800px) {
       width: fit-content;
       flex-direction: column;

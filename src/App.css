@@ -1,8 +1,6 @@
 * {
   margin: 0;
-  svg {
-    outline: none;
-  }
+  -webkit-tap-highlight-color: transparent;
 }
 p {
   margin: 0;

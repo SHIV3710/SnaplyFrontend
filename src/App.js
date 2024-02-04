@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { loaduser } from "./Actions/User";
 import { AnyUser } from "./Pages/AnyUser";
+import { Header } from "./Components/Header";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -15,15 +16,12 @@ export default function App() {
     dispatch(loaduser());
   }, [auth]);
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={!auth ? <Login /> : <Social />} />
-        <Route path="/signup" element={<Signup />} />
-        {/* <Route path="/account" element={!auth ? <Login /> : <Account />} /> */}
-        {/* <Route path="/newpost" element={auth ? <CreatePost /> : <Login />} /> */}
-        {/* <Route path="/search" element={auth ? <Search /> : <Login />} /> */}
-        <Route path="/seeuser" element={auth ? <AnyUser /> : <Login />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={!auth ? <Login /> : <Social />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }

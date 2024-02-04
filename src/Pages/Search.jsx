@@ -81,6 +81,7 @@ export const Search = () => {
         </Left>
         <Right></Right>
       </Bottom>
+      <button onClick={() => dispatch(changeabsolute(null))}> Close</button>
     </Main>
   );
 };
@@ -96,6 +97,19 @@ const Main = styled.div`
   justify-content: center;
   @media screen and (max-width: 800px) {
     width: 40vw;
+  }
+  > button {
+    height: 4vh;
+    width: 10vw;
+    font-family: "Poppins";
+    top: 90%;
+    position: absolute;
+    cursor: pointer;
+    @media screen and (max-width: 800px) {
+      width: 15vw;
+      top: 90%;
+      outline-style: none;
+    }
   }
 `;
 

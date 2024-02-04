@@ -76,16 +76,7 @@ export const CreatePost = () => {
           </button>
         </Post>
       </Bottom>
-      <RxCross2
-        onClick={() => dispatch(changeabsolute(null))}
-        style={{
-          position: "absolute",
-          top: "5%",
-          right: "5%",
-          fontSize: "xx-large",
-          color: "white",
-        }}
-      />
+      <button onClick={() => dispatch(changeabsolute(null))}> Close</button>
     </Main>
   );
 };
@@ -100,6 +91,19 @@ const Main = styled.div`
   z-index: 999;
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.5);
+  > button {
+    height: 4vh;
+    width: 5vw;
+    font-family: "Poppins";
+    top: 90%;
+    position: absolute;
+    cursor: pointer;
+    @media screen and (max-width: 800px) {
+      width: 15vw;
+      top: 76%;
+      outline-style: none;
+    }
+  }
 `;
 const Bottom = styled.div`
   height: 90vh;

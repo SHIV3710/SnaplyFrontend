@@ -120,27 +120,7 @@ export const Account = () => {
         {!show ? (
           <></>
         ) : (
-          <div
-            style={{
-              height: "100vh",
-              width: "100vw",
-              display: "flex",
-              position: "absolute",
-              justifyContent: "center",
-              alignItems: "center",
-              backdropFilter: "blur(80px)",
-            }}
-          >
-            <RxCross2
-              onClick={() => handleimage(undefined)}
-              style={{
-                position: "absolute",
-                marginLeft: "90%",
-                marginBottom: "50%",
-                fontSize: "30px",
-                cursor: "pointer",
-              }}
-            />
+          <div className="absolute">
             <Post
               postId={show._id}
               caption={show.caption}
@@ -153,6 +133,7 @@ export const Account = () => {
               isDelete={true}
               isAccount={true}
             />
+            <button onClick={() => handleimage(undefined)}> Close</button>
           </div>
         )}
         <Down>
@@ -208,6 +189,31 @@ const Main = styled.div`
   overflow: hidden;
   @media screen and (max-width: 800px) {
     width: 100vw;
+  }
+  .absolute {
+    height: 100vh;
+    width: 80vw;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    @media screen and (max-width: 800px) {
+      width: 100vw;
+    }
+    > button {
+      height: 4vh;
+      width: 5vw;
+      font-family: "Poppins";
+      top: 90%;
+      position: absolute;
+      cursor: pointer;
+      @media screen and (max-width: 800px) {
+        width: 15vw;
+        top: 70%;
+        outline-style: none;
+      }
+    }
   }
 `;
 const Down = styled.div`

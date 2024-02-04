@@ -108,6 +108,7 @@ const Main = styled.div`
   z-index: 900;
   position: relative;
   user-select: none;
+  scroll-behavior: smooth;
   @media screen and (max-width: 800px) {
     flex-direction: column-reverse;
     gap: 0;
@@ -146,6 +147,8 @@ const Right = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100vh;
+  width: 19vw;
   @media screen and (max-width: 800px) {
     height: 90vh;
     width: 15vw;

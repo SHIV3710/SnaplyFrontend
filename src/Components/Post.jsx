@@ -213,7 +213,7 @@ const Main = styled.div`
     padding: 0.5vh;
   }
   > img {
-    height: 25rem;
+    height: 50vh;
     width: 60vw;
     border: 2px solid grey;
     border-radius: 2px;

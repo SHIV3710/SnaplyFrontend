@@ -27,8 +27,8 @@ export const EditProfile = () => {
         display: component === "/editprofile" ? "flex" : "none",
       }}
     >
-      <div>
-        <p>Change Password</p>
+      <div className="pass">
+        <span>Change Password</span>
         <div>
           <p>Old Password</p>
           {!oldp ? (
@@ -38,8 +38,8 @@ export const EditProfile = () => {
               }}
               style={{
                 position: "absolute",
-                left: "58%",
-                top: "43%",
+                left: "85%",
+                top: "33%",
                 zIndex: "999",
                 cursor: "pointer",
               }}
@@ -51,8 +51,8 @@ export const EditProfile = () => {
               }}
               style={{
                 position: "absolute",
-                left: "58%",
-                top: "42.5%",
+                left: "85%",
+                top: "33%",
                 cursor: "pointer",
               }}
             />
@@ -74,8 +74,8 @@ export const EditProfile = () => {
               }}
               style={{
                 position: "absolute",
-                left: "58%",
-                top: "58%",
+                left: "85%",
+                top: "63%",
                 cursor: "pointer",
               }}
             />
@@ -86,8 +86,8 @@ export const EditProfile = () => {
               }}
               style={{
                 position: "absolute",
-                left: "58%",
-                top: "57.5%",
+                left: "85%",
+                top: "63%",
                 cursor: "pointer",
               }}
             />
@@ -103,17 +103,10 @@ export const EditProfile = () => {
         </div>
         <button onClick={handlesubmit}> Submit</button>
       </div>
-      <RxCross2
-        onClick={() => dispatch(changeabsolute(null))}
-        style={{
-          position: "absolute",
-          top: "5%",
-          right: "5%",
-          fontSize: "xx-large",
-          color: "white",
-          cursor: "pointer",
-        }}
-      />
+      <button className="close" onClick={() => dispatch(changeabsolute(null))}>
+        {" "}
+        Close
+      </button>
     </Main>
   );
 };
@@ -142,6 +135,9 @@ const Main = styled.div`
     &:focus {
       outline: none;
     }
+    @media screen and (max-width: 800px) {
+      width: 80vw;
+    }
   }
   > div {
     height: 50vh;
@@ -152,6 +148,24 @@ const Main = styled.div`
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    position: relative;
+    @media screen and (max-width: 800px) {
+      width: 90vw;
+    }
+  }
+
+  .close {
+    height: 4vh;
+    width: 5vw;
+    font-family: "Poppins";
+    top: 80%;
+    position: absolute;
+    cursor: pointer;
+    @media screen and (max-width: 800px) {
+      width: 15vw;
+      top: 80%;
+      outline-style: none;
+    }
   }
 
   button {
@@ -162,6 +176,9 @@ const Main = styled.div`
     cursor: pointer;
     &:hover {
       background-color: rgb(3, 188, 255);
+    }
+    @media screen and (max-width: 800px) {
+      width: 15vw;
     }
   }
 `;
