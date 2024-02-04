@@ -20,6 +20,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={!auth ? <Login /> : <Social />} />
+          <Route path="/signup" element={!auth ? <Signup /> : <Social />} />
         </Routes>
       </BrowserRouter>
     </>
