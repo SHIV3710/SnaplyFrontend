@@ -10,7 +10,7 @@ export const AllComments = ({ comments, isAccount, postId, func }) => {
       <Bottom>
         <div className="content">
           <span>Comments</span>
-          <RxCross2 onClick={() => func()} />
+          <RxCross2 className="cut" onClick={() => func()} />
         </div>
         <div className="comment">
           {comment.map((comm, index) => {
@@ -58,7 +58,7 @@ const Bottom = styled.div`
     }
   }
 
-  svg {
+  .cut {
     position: absolute;
     left: 85%;
     top: 18%;
