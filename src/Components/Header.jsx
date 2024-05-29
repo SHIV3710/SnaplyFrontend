@@ -194,6 +194,7 @@ const Main = styled.div`
   }
 
   .absolute {
+    height:fit-content;
     display: flex;
     gap: 2vh;
     cursor: pointer;
