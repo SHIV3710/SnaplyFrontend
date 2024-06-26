@@ -142,6 +142,11 @@ export const updatecaption = (id, caption) => async (dispatch) => {
         caption: caption,
       },
       {
+        params: {
+          token: Cookies.get("token"),
+        },
+      },
+      {
         headers: { "Content-Type": "application/json" },
       }
     );
